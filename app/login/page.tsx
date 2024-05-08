@@ -76,7 +76,7 @@ export default function Login({
 
       <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
         {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+          <p className="mt-4 p-4 bg-red-100 border border-red-500 text-slate-600 text-center">
             {searchParams.message}
           </p>
         )}
