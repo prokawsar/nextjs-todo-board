@@ -87,18 +87,11 @@ export default function Login({
         />
         <SubmitButton
           formAction={signIn}
-          className="bg-slate-500 text-white rounded-md px-4 py-2 text-foreground mb-2"
+          className="bg-slate-500 hover:bg-slate-600 text-white rounded-md px-4 py-2 text-foreground mb-2"
           pendingText="Signing In..."
         >
           Sign In
         </SubmitButton>
-        {/* <SubmitButton
-          formAction={signUp}
-          className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
-          pendingText="Signing Up..."
-        >
-          Sign Up
-        </SubmitButton> */}
         <p className="text-center">
           Haven't account?{" "}
           <a className=" text-sky-600" href="/signup">
