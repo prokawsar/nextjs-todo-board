@@ -2,9 +2,9 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { SubmitButton } from "@/components/submit-button";
+import { SubmitButton } from "@/components/SubmitButton";
 
-export default function Login({
+export default function Signup({
   searchParams,
 }: {
   searchParams: { message: string };
@@ -61,6 +61,7 @@ export default function Login({
           autoComplete="off"
           name="password"
           placeholder="••••••••"
+          minLength={6}
           required
         />
         <SubmitButton
