@@ -7,7 +7,7 @@ import { SubmitButton } from "@/components/submit-button";
 export default function Login({
   searchParams,
 }: {
-  searchParams: { message: string };
+  searchParams: { message: string; success?: string };
 }) {
   const signIn = async (formData: FormData) => {
     "use server";
@@ -25,7 +25,7 @@ export default function Login({
       return redirect("/login?message=Could not authenticate user");
     }
 
-    return redirect("/protected");
+    return redirect("/dashboard");
   };
 
   const signUp = async (formData: FormData) => {
@@ -80,6 +80,12 @@ export default function Login({
             {searchParams.message}
           </p>
         )}
+        {searchParams?.success && (
+          <p className="mt-4 p-4 bg-teal-100 border border-teal-500 text-slate-600 text-center">
+            {searchParams.success}
+          </p>
+        )}
+
         <label className="text-md" htmlFor="email">
           Email
         </label>

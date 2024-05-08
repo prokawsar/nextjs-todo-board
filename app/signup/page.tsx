@@ -32,7 +32,7 @@ export default function Login({
       );
     }
 
-    return redirect("/signup?message=Check email to continue sign in process");
+    return redirect("/login?success=Check email to continue sign in process");
   };
 
   return (
