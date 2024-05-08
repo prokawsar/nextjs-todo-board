@@ -13,17 +13,6 @@ export const metadata = {
   description: "The fastest way to build apps with Next.js and Supabase",
 };
 
-const canInitSupabaseClient = () => {
-  try {
-    createClient();
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
-
-const isSupabaseConnected = canInitSupabaseClient();
-
 export default function RootLayout({
   children,
 }: {
@@ -38,7 +27,7 @@ export default function RootLayout({
               <a href="/">
                 <h1 className="text-2xl font-bold text-slate-600">Todo</h1>
               </a>
-              {isSupabaseConnected && <AuthButton />}
+              {<AuthButton />}
             </div>
           </nav>
           {children}
