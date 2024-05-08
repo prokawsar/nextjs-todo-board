@@ -9,25 +9,6 @@ export default function Login({
 }: {
   searchParams: { message: string };
 }) {
-  const signIn = async (formData: FormData) => {
-    "use server";
-
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const supabase = createClient();
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      return redirect("/login?message=Could not authenticate user");
-    }
-
-    return redirect("/protected");
-  };
-
   const signUp = async (formData: FormData) => {
     "use server";
 
@@ -45,10 +26,10 @@ export default function Login({
     });
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      return redirect("/signup?message=Could not signup user");
     }
 
-    return redirect("/login?message=Check email to continue sign in process");
+    return redirect("/signup?message=Check email to continue sign in process");
   };
 
   return (
@@ -101,25 +82,18 @@ export default function Login({
           required
         />
         <SubmitButton
-          formAction={signIn}
-          className="bg-slate-500 text-white rounded-md px-4 py-2 text-foreground mb-2"
-          pendingText="Signing In..."
-        >
-          Sign In
-        </SubmitButton>
-        {/* <SubmitButton
           formAction={signUp}
           className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
           pendingText="Signing Up..."
         >
           Sign Up
-        </SubmitButton> */}
+        </SubmitButton>
         <p className="text-center">
-          Haven't account?{" "}
-          <a className=" text-sky-600" href="/signup">
-            Sign up{" "}
-          </a>{" "}
-          now.
+          Already have account?{" "}
+          <a className=" text-sky-600" href="/login">
+            {"Log in "}
+          </a>
+          {"here."}
         </p>
       </form>
     </div>
