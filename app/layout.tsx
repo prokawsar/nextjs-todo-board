@@ -1,5 +1,7 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
+import AuthButton from "@/components/AuthButton";
+import { createClient } from "@/utils/supabase/server";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -7,9 +9,20 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
+  title: "Todo board | Nextjs, Supabase",
   description: "The fastest way to build apps with Next.js and Supabase",
 };
+
+const canInitSupabaseClient = () => {
+  try {
+    createClient();
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+const isSupabaseConnected = canInitSupabaseClient();
 
 export default function RootLayout({
   children,
@@ -20,6 +33,14 @@ export default function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground">
         <main className="min-h-screen flex flex-col items-center">
+          <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+            <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
+              <a href="/">
+                <h1 className="text-2xl font-bold text-slate-600">Todo</h1>
+              </a>
+              {isSupabaseConnected && <AuthButton />}
+            </div>
+          </nav>
           {children}
         </main>
       </body>
