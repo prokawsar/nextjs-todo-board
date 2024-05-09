@@ -1,3 +1,5 @@
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 import { useState, useContext } from "react";
 // import { niceDate } from "../../utils/date";
 
@@ -14,6 +16,8 @@ export default function CardDetails({
 }: Props) {
   const [updateLoading, setUpdateLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const supabase = createClient();
+  const router = useRouter();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -23,6 +27,14 @@ export default function CardDetails({
     //   ...data,
     //   [name]: value,
     // });
+  };
+
+  const handleDelete = async () => {
+    const { error } = await supabase.from("todos").delete().eq("id", data.id);
+    if (!error) {
+      setShowDrawer ? setShowDrawer() : "";
+      router.refresh();
+    }
   };
 
   return (
@@ -123,10 +135,10 @@ export default function CardDetails({
           <div className="flex justify-between">
             <button
               type="button"
-              onClick={() => setShowDrawer()}
+              onClick={() => handleDelete()}
               className="border px-3 py-1 rounded-md hover:bg-slate-100 w-auto"
             >
-              Cancel
+              Delete
             </button>
 
             <button
