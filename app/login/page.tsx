@@ -60,7 +60,7 @@ export default function Login({
           </p>
         )}
         {searchParams?.success && (
-          <p className="mt-4 p-4 bg-indigo-100 border border-teal-500 text-slate-600 text-center">
+          <p className="mt-4 p-4 bg-purple-100 border border-teal-500 text-slate-600 text-center">
             {searchParams.success}
           </p>
         )}

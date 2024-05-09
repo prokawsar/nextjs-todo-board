@@ -19,10 +19,12 @@ export default async function ProtectedPage() {
 
   console.log(categories, todos);
   return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center max-w-7xl">
+    <div className="flex-1 w-full flex flex-col items-center max-w-7xl">
+      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-purple-700 to-transparent" />
+
       <div className={`grid grid-cols-5 gap-x-2 w-full`}>
         {categories?.map((category) => (
-          <CategoryBoard category={category} />
+          <CategoryBoard category={category} todos={todos} key={category.id} />
         ))}
         {<AddCategory />}
       </div>

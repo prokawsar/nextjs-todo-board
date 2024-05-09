@@ -1,12 +1,32 @@
+import { createClient } from "@/utils/supabase/client";
+import { redirect } from "next/navigation";
+import { FormEvent } from "react";
 interface AddTaskProps {
   onClose?: () => void;
 }
 
 export default function AddTask({ onClose }: AddTaskProps) {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const supabase = createClient();
+    if (!formData.get("title")) return;
+
+    const { error, data } = await supabase.from("todos").insert({
+      title: formData.get("title"),
+      description: formData.get("description"),
+    });
+    if (error) {
+      console.error(error);
+      return;
+    }
+    return redirect("/dashboard");
+  };
   return (
     <div className="relative bg-white p-4 rounded-md space-y-6 ">
       <h2 className="text-black text-xl dark:text-white">{`${"Add new task"}`}</h2>
-      <form>
+      <form onSubmit={onSubmit}>
         <div className="flex flex-col w-full gap-3">
           <label>Title</label>
           <input
@@ -37,7 +57,7 @@ export default function AddTask({ onClose }: AddTaskProps) {
           />
           <button
             type="submit"
-            className="my-1 bg-indigo-100 hover:bg-indigo-500 hover:text-white border border-blue-700 p-2  rounded-md"
+            className="my-1 bg-purple-100 hover:bg-purple-500 hover:text-white border border-blue-700 p-2  rounded-md"
           >
             Add
           </button>
