@@ -1,6 +1,7 @@
+import { useUserStore } from "@/store";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { useState, useContext } from "react";
+import { useState, useContext, FormEvent } from "react";
 // import { niceDate } from "../../utils/date";
 
 type Props = {
@@ -18,15 +19,29 @@ export default function CardDetails({
   const [deleteLoading, setDeleteLoading] = useState(false);
   const supabase = createClient();
   const router = useRouter();
+  const { user } = useUserStore();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ): void => {
-    const { name, value } = e.target;
-    // setData({
-    //   ...data,
-    //   [name]: value,
-    // });
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    if (!formData.get("title")) return;
+
+    const { error } = await supabase
+      .from("todos")
+      .update({
+        title: formData.get("title"),
+        description: formData.get("description"),
+        user: user?.id,
+        expire_at: formData.get("expire"),
+      })
+      .eq("id", data.id);
+    if (error) {
+      console.error(error);
+      return;
+    }
+    setShowDrawer ? setShowDrawer() : "";
+    router.refresh();
   };
 
   const handleDelete = async () => {
@@ -73,7 +88,7 @@ export default function CardDetails({
             <span className="sr-only">Close menu</span>
           </button>
         </div>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-5">
             <label
               htmlFor="title"
@@ -84,7 +99,6 @@ export default function CardDetails({
             <input
               type="text"
               defaultValue={data.title}
-              onChange={handleChange}
               name="title"
               id="title"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-slate-400 block w-full p-2.5"
@@ -104,7 +118,6 @@ export default function CardDetails({
               id="description"
               name="description"
               defaultValue={data.description}
-              onChange={handleChange}
               rows={4}
               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:outline-slate-400"
               placeholder="Description..."
@@ -113,20 +126,19 @@ export default function CardDetails({
 
           <div className="mb-5">
             <label
-              htmlFor="expiray_date"
+              htmlFor="expire"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Expiration date
             </label>
             <input
               type="date"
-              id="expiray_date"
-              name="expiray_date"
+              id="expire"
+              name="expire"
               defaultValue={
-                data.expiray_date &&
-                new Date(data.expiray_date)?.toISOString()?.substr(0, 10)
+                data.expire_at &&
+                new Date(data.expire_at)?.toISOString()?.substr(0, 10)
               }
-              onChange={handleChange}
               className="bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:outline-slate-400 block w-full p-2.5 "
               required
             />
@@ -142,9 +154,7 @@ export default function CardDetails({
             </button>
 
             <button
-              onClick={(e: any) => {
-                e.preventDefault();
-              }}
+              type="submit"
               className="bg-purple-400 hover:bg-purple-600 px-3 py-1 rounded-md border text-white w-auto"
             >
               Save

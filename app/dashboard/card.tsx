@@ -1,3 +1,7 @@
+import { niceDate } from "@/utils/date";
+import { faClock } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 type Props = {
   category?: {
     id: number;
@@ -8,6 +12,7 @@ type Props = {
     title: string;
     description: string;
     category: number;
+    expire_at: string;
   };
   onClick?: () => void;
 };
@@ -29,6 +34,10 @@ export default function Card({ category, todo, onClick }: Props) {
     >
       <p className="">{todo?.title}</p>
       <p className="truncate text-slate-500">{todo?.description}</p>
+      <p className="truncate text-slate-500 gap-1 flex flex-row items-center text-xs">
+        <FontAwesomeIcon icon={faClock} />
+        {niceDate(todo?.expire_at)}
+      </p>
     </div>
   );
 }

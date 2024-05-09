@@ -27,6 +27,7 @@ export default function AddTask({
       title: formData.get("title"),
       description: formData.get("description"),
       user: user?.id,
+      expire_at: formData.get("expire"),
       category: category_id,
     });
     if (error) {
