@@ -6,26 +6,17 @@ import AddTask from "./add-task";
 import Card from "./card";
 import { useUserStore } from "@/store";
 import CardDetails from "./card-details";
+import { Category, Todo } from "@/types/types";
 
 type Props = {
-  category?: {
-    id: number;
-    name: string;
-  };
-  todos?:
-    | {
-        id: string;
-        title: string;
-        description: string;
-        category: number;
-      }[]
-    | null;
+  category?: Category;
+  todos?: Todo[] | null;
 };
 
 export default function CategoryBoard({ category, todos }: Props) {
   const [showAddTask, setshowAddTask] = useState(false);
   const [showCardDetails, setshowCardDetails] = useState(false);
-  const [todoData, setTodoData] = useState(false);
+  const [todoData, setTodoData] = useState({} as Todo);
   const supabase = createClient();
   const { user, setUser } = useUserStore();
   const userData = supabase.auth.getUser();

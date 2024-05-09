@@ -1,11 +1,12 @@
 import { useUserStore } from "@/store";
+import { Todo } from "@/types/types";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { useState, useContext, FormEvent } from "react";
 // import { niceDate } from "../../utils/date";
 
 type Props = {
-  data: any;
+  data: Todo;
   showDrawer: boolean;
   setShowDrawer: Function;
 };
@@ -65,7 +66,7 @@ export default function CardDetails({
             id="drawer-left-label"
             className="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400"
           >
-            Details
+            Task Details
           </h5>
           <button
             onClick={() => setShowDrawer(false)}

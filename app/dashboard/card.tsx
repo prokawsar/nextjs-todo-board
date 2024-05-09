@@ -1,19 +1,11 @@
+import { Category, Todo } from "@/types/types";
 import { niceDate } from "@/utils/date";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type Props = {
-  category?: {
-    id: number;
-    name: string;
-  };
-  todo?: {
-    id: string;
-    title: string;
-    description: string;
-    category: number;
-    expire_at: string;
-  };
+  category?: Category;
+  todo?: Todo;
   onClick?: () => void;
 };
 
