@@ -23,7 +23,7 @@ export default async function ProtectedPage() {
         <Header />
         <main className="flex-1 flex flex-col gap-6"></main>
       </div> */}
-      <div className="grid grid-cols-5">
+      <div className="grid grid-cols-5 w-full">
         {!categories?.length && (
           // <div className="bg-slate-100 rounded-md px-3 py-5 flex justify-center">
           //   <button
