@@ -11,9 +11,9 @@ export default function AddCategory() {
     const formData = new FormData(event.currentTarget);
     console.log(formData);
     const supabase = createClient();
-    const { error } = await supabase.from("categories").insert({
-      name: "To do",
-    });
+    // const { error } = await supabase.from("categories").insert({
+    //   name: "To do",
+    // });
     // const response = await fetch('/api/submit', {
     //   method: 'POST',
     //   body: formData,
@@ -44,12 +44,12 @@ export default function AddCategory() {
               id="name"
               type="text"
               placeholder="Category name"
-              className="w-full rounded bg-white p-1  focus:outline-slate-400"
+              className="w-full rounded bg-white p-1 border  focus:outline-slate-400"
             />
             <div className="flex flex-row items-center justify-between gap-3">
               <button
                 type="submit"
-                className="my-1 bg-blue-300 border border-blue-700 px-2 rounded-md"
+                className="my-1 bg-indigo-400 text-white border border-blue-700 px-3 rounded-md"
               >
                 Add
               </button>
