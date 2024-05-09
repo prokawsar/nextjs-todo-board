@@ -1,15 +1,18 @@
 "use client";
 import Modal from "@/components/Modal";
 import { createClient } from "@/utils/supabase/client";
-import { FormEvent, useState } from "react";
+import { DragEvent, useState } from "react";
 import AddTask from "./add-task";
 import Card from "./card";
 import { useUserStore } from "@/store";
 import CardDetails from "./card-details";
 import { Category, Todo } from "@/types/types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/navigation";
 
 type Props = {
-  category?: Category;
+  category: Category;
   todos?: Todo[] | null;
 };
 
@@ -20,6 +23,7 @@ export default function CategoryBoard({ category, todos }: Props) {
   const supabase = createClient();
   const { user, setUser } = useUserStore();
   const userData = supabase.auth.getUser();
+  const router = useRouter();
 
   if (!user) {
     userData.then((res) => setUser(res.data.user));
@@ -30,9 +34,34 @@ export default function CategoryBoard({ category, todos }: Props) {
     setTodoData(data);
   };
 
+  const handleDrop = async (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const todo_id = e.dataTransfer.getData("card");
+    if (!todo_id) return;
+
+    const { error } = await supabase
+      .from("todos")
+      .update({
+        category: category.id,
+      })
+      .eq("id", todo_id);
+    if (error) {
+      console.error(error);
+    }
+
+    router.refresh();
+  };
+
   return (
-    <div className="bg-slate-100 rounded-md px-3 py-2 flex flex-col h-fit">
+    <div
+      draggable
+      onDrop={(e) => handleDrop(e)}
+      onDragOver={(e) => e.preventDefault()}
+      className="bg-slate-100 rounded-md px-3 py-2 flex flex-col h-fit"
+    >
       <p className="text-xl font-bold text-center">{category?.name}</p>
+
+      {/* Task list */}
       <div className="flex flex-col gap-3">
         {todos?.map((todo) => (
           <Card
@@ -45,10 +74,10 @@ export default function CategoryBoard({ category, todos }: Props) {
       </div>
       <button
         onClick={() => setshowAddTask(true)}
-        className={`border-dashed border-[1.5px] mt-3 rounded-md px-3 py-2 bg-slate-200 hover:bg-white
-        
+        className={`border-dashed border-[1.5px] mt-3 rounded-md px-3 py-2 bg-slate-100 hover:bg-slate-200 flex flex-row items-center gap-1 justify-center
         `}
       >
+        <FontAwesomeIcon icon={faPlus} />
         Add task
       </button>
       {showAddTask && (

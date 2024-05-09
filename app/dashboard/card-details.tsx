@@ -57,14 +57,14 @@ export default function CardDetails({
     <div
       className={`fixed w-96 top-0 right-0 z-40 ${
         showDrawer ? "flex" : "hidden"
-      }  h-screen pt-8 transition-all -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700`}
+      }  h-screen pt-8 transition-all -translate-x-full bg-white border-l-[1.5px] border-gray-200 sm:translate-x-0 `}
       aria-label="sidebar"
     >
-      <div className="h-full w-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800 relative">
+      <div className="h-full w-full px-3 pb-4 overflow-y-auto bg-white  relative">
         <div>
           <h5
             id="drawer-left-label"
-            className="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400"
+            className="inline-flex items-center mb-4 text-lg font-semibold text-gray-500"
           >
             Task Details
           </h5>
@@ -93,7 +93,7 @@ export default function CardDetails({
           <div className="mb-5">
             <label
               htmlFor="title"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900"
             >
               Title
             </label>
@@ -111,7 +111,7 @@ export default function CardDetails({
           <div className="mb-5">
             <label
               htmlFor="description"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 "
             >
               Description
             </label>
@@ -128,7 +128,7 @@ export default function CardDetails({
           <div className="mb-5">
             <label
               htmlFor="expire"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900"
             >
               Expiration date
             </label>

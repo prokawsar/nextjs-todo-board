@@ -1,5 +1,7 @@
 import { useUserStore } from "@/store";
 import { createClient } from "@/utils/supabase/client";
+import { faMultiply } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 interface AddTaskProps {
@@ -39,7 +41,7 @@ export default function AddTask({
   };
   return (
     <div className="relative bg-white p-4 rounded-md space-y-6 ">
-      <h2 className="text-black text-xl dark:text-white">{`${"Add new task"}`}</h2>
+      <h2 className="text-black text-xl">{`${"Add new task"}`}</h2>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col w-full gap-3">
           <label>Title</label>
@@ -80,9 +82,9 @@ export default function AddTask({
       <button
         onClick={() => (onClose ? onClose() : null)}
         type="button"
-        className="bg-slate-200 p-1 absolute right-1 -top-5 hover:bg-slate-50 rounded-full h-6 w-6 flex justify-center items-center"
+        className="bg-slate-200 p-1 absolute right-1 -top-5 hover:bg-slate-400 hover:text-white rounded-full h-6 w-6 flex justify-center items-center"
       >
-        x
+        <FontAwesomeIcon icon={faMultiply} />
       </button>
     </div>
   );
