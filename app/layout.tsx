@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className="bg-background text-foreground">
         <main className="min-h-screen flex flex-col items-center">
           <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-            <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
+            <div className="w-full max-w-7xl flex justify-between items-center p-3">
               <a href="/">
                 <h1 className="text-2xl font-bold text-slate-600">Todo</h1>
               </a>
@@ -31,6 +31,20 @@ export default function RootLayout({
             </div>
           </nav>
           {children}
+          <footer className="w-full p-6 flex flex-col justify-center text-center text-xs">
+            <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-6" />
+            <p>
+              Powered by{" "}
+              <a
+                href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
+                target="_blank"
+                className="font-bold hover:underline"
+                rel="noreferrer"
+              >
+                Supabase
+              </a>
+            </p>
+          </footer>
         </main>
       </body>
     </html>
