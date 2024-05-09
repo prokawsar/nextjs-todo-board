@@ -5,6 +5,7 @@ import { FormEvent, useState } from "react";
 import AddTask from "./add-task";
 import Card from "./card";
 import { useUserStore } from "@/store";
+import CardDetails from "./card-details";
 
 type Props = {
   category?: {
@@ -23,6 +24,8 @@ type Props = {
 
 export default function CategoryBoard({ category, todos }: Props) {
   const [showAddTask, setshowAddTask] = useState(false);
+  const [showCardDetails, setshowCardDetails] = useState(false);
+  const [todoData, setTodoData] = useState(false);
   const supabase = createClient();
   const { user, setUser } = useUserStore();
   const userData = supabase.auth.getUser();
@@ -31,12 +34,22 @@ export default function CategoryBoard({ category, todos }: Props) {
     userData.then((res) => setUser(res.data.user));
   }
 
+  const handleShowTodo = (data: any) => {
+    setshowCardDetails(true);
+    setTodoData(data);
+  };
+
   return (
     <div className="bg-slate-100 rounded-md px-3 py-2 flex flex-col h-fit">
       <p className="text-xl font-bold text-center">{category?.name}</p>
       <div className="flex flex-col gap-3">
         {todos?.map((todo) => (
-          <Card key={todo.id} category={category} todo={todo} />
+          <Card
+            onClick={() => handleShowTodo(todo)}
+            key={todo.id}
+            category={category}
+            todo={todo}
+          />
         ))}
       </div>
       <button
@@ -55,6 +68,14 @@ export default function CategoryBoard({ category, todos }: Props) {
             onSubmit={() => setshowAddTask(false)}
           />
         </Modal>
+      )}
+
+      {showCardDetails && (
+        <CardDetails
+          data={todoData}
+          showDrawer={showCardDetails}
+          setShowDrawer={() => setshowCardDetails(false)}
+        />
       )}
     </div>
   );
