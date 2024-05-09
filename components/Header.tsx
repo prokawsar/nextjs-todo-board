@@ -1,23 +1,16 @@
+import AuthButton from "./AuthButton";
 import NextLogo from "./NextLogo";
 import SupabaseLogo from "./SupabaseLogo";
 
 export default function Header() {
   return (
-    <div className="flex flex-col gap-16 items-center">
-      <div className="flex gap-8 justify-center items-center">
-        <a
-          href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <SupabaseLogo />
+    <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+      <div className="w-full max-w-7xl flex justify-between items-center p-3">
+        <a href="/">
+          <h1 className="text-2xl font-bold text-slate-600">Todo Board</h1>
         </a>
-        <span className="border-l rotate-45 h-6" />
-        <a href="https://nextjs.org/" target="_blank" rel="noreferrer">
-          <NextLogo />
-        </a>
+        {<AuthButton />}
       </div>
-      <h1 className="sr-only">Supabase and Next.js Starter Template</h1>
-    </div>
+    </nav>
   );
 }
