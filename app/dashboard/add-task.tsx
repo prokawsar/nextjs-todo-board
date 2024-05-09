@@ -1,12 +1,22 @@
+import { useUserStore } from "@/store";
 import { createClient } from "@/utils/supabase/client";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 interface AddTaskProps {
   onClose?: () => void;
+  onSubmit?: () => void;
+  category_id: number | undefined;
 }
 
-export default function AddTask({ onClose }: AddTaskProps) {
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+export default function AddTask({
+  category_id,
+  onClose,
+  onSubmit,
+}: AddTaskProps) {
+  const { user } = useUserStore();
+  const router = useRouter();
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -16,17 +26,20 @@ export default function AddTask({ onClose }: AddTaskProps) {
     const { error, data } = await supabase.from("todos").insert({
       title: formData.get("title"),
       description: formData.get("description"),
+      user: user?.id,
+      category: category_id,
     });
     if (error) {
       console.error(error);
       return;
     }
-    return redirect("/dashboard");
+    onSubmit ? onSubmit() : "";
+    router.refresh();
   };
   return (
     <div className="relative bg-white p-4 rounded-md space-y-6 ">
       <h2 className="text-black text-xl dark:text-white">{`${"Add new task"}`}</h2>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="flex flex-col w-full gap-3">
           <label>Title</label>
           <input

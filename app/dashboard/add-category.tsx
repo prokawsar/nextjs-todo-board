@@ -1,9 +1,13 @@
 "use client";
+import { useUserStore } from "@/store";
 import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 export default function AddCategory() {
   const [showAddCategory, setShowAddCategory] = useState(false);
+  const router = useRouter();
+  const { user } = useUserStore();
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -15,7 +19,12 @@ export default function AddCategory() {
 
     const { error, data } = await supabase.from("categories").insert({
       name: formData.get("name"),
+      user: user?.id,
     });
+
+    if (!error) {
+      router.refresh();
+    }
   };
 
   return (
