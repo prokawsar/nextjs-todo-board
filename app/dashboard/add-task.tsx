@@ -1,20 +1,16 @@
+import CloseButton from "@/components/CloseButton";
 import { useUserStore } from "@/store";
+import { Category } from "@/types/types";
 import { createClient } from "@/utils/supabase/client";
-import { faMultiply } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 interface AddTaskProps {
   onClose?: () => void;
   onSubmit?: () => void;
-  category_id: number | undefined;
+  category: Category | undefined;
 }
 
-export default function AddTask({
-  category_id,
-  onClose,
-  onSubmit,
-}: AddTaskProps) {
+export default function AddTask({ category, onClose, onSubmit }: AddTaskProps) {
   const { user } = useUserStore();
   const router = useRouter();
 
@@ -30,7 +26,7 @@ export default function AddTask({
       description: formData.get("description"),
       user: user?.id,
       expire_at: formData.get("expire"),
-      category: category_id,
+      category: category?.id,
     });
     if (error) {
       console.error(error);
@@ -39,9 +35,16 @@ export default function AddTask({
     onSubmit ? onSubmit() : "";
     router.refresh();
   };
+
+  let defaultDate = new Date();
+  defaultDate.setDate(defaultDate.getDate() + 3);
+
   return (
     <div className="relative bg-white p-4 rounded-md space-y-6 ">
-      <h2 className="text-black text-xl">{`${"Add new task"}`}</h2>
+      <h2 className="text-black text-xl">
+        Add new task{" "}
+        <small className="text-xs text-slate-600">{category?.name}</small>
+      </h2>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col w-full gap-3">
           <label>Title</label>
@@ -69,6 +72,7 @@ export default function AddTask({
             autoComplete="off"
             name="expire"
             type="date"
+            defaultValue={defaultDate.toLocaleDateString()}
             className="w-full rounded p-2 border  focus:outline-slate-400"
           />
           <button
@@ -79,13 +83,10 @@ export default function AddTask({
           </button>
         </div>
       </form>
-      <button
+      <CloseButton
         onClick={() => (onClose ? onClose() : null)}
-        type="button"
-        className="bg-slate-200 p-1 absolute right-1 -top-5 hover:bg-slate-400 hover:text-white rounded-full h-6 w-6 flex justify-center items-center"
-      >
-        <FontAwesomeIcon icon={faMultiply} />
-      </button>
+        styles="absolute right-1 -top-5"
+      />
     </div>
   );
 }

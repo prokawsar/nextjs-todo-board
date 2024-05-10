@@ -17,6 +17,11 @@ export default async function Dashboard() {
   const { data: categories } = await supabase.from("categories").select();
   const { data: todos } = await supabase.from("todos").select();
 
+  // Restricted access category for users
+  const this_users_category = categories?.filter(
+    (category) => category.user == user.id
+  );
+
   return (
     <div className="flex-1 w-full flex flex-col items-center max-w-7xl">
       <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-purple-700 to-transparent" />
@@ -24,7 +29,7 @@ export default async function Dashboard() {
       <div
         className={`grid gap-x-2 w-full auto-cols-[16rem] grid-flow-col overflow-x-auto h-[85vh]`}
       >
-        {categories?.map((category) => (
+        {this_users_category?.map((category) => (
           <CategoryBoard category={category} todos={todos} key={category.id} />
         ))}
         {<AddCategory />}

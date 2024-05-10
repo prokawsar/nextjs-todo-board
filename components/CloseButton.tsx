@@ -9,7 +9,7 @@ export default function CloseButton({ onClick, styles }: CloseButtonProp) {
   return (
     <button
       type="button"
-      className={`bg-slate-200 p-1 hover:bg-slate-400 hover:text-white rounded-full h-6 w-6 flex justify-center items-center ${styles}`}
+      className={`bg-slate-200 p-1 hover:bg-slate-400 hover:text-white rounded-full h-5 w-5 flex justify-center items-center ${styles}`}
       onClick={() => (onClick ? onClick() : "")}
     >
       <FontAwesomeIcon icon={faMultiply} />

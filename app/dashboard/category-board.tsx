@@ -63,6 +63,10 @@ export default function CategoryBoard({ category, todos }: Props) {
       .from("categories")
       .delete()
       .eq("id", category.id);
+    if (error) {
+      console.error(error);
+    }
+    router.refresh();
   };
 
   return (
@@ -70,36 +74,42 @@ export default function CategoryBoard({ category, todos }: Props) {
       draggable
       onDrop={(e) => handleDrop(e)}
       onDragOver={(e) => e.preventDefault()}
-      className="bg-slate-100 relative rounded-md px-3 py-2 flex flex-col h-fit"
+      className="bg-slate-100 rounded-md flex flex-col h-fit"
     >
-      {!this_category_todos?.length && (
-        <CloseButton onClick={deleteCategory} styles="absolute top-0 right-0" />
-      )}
-      <p className="text-xl font-bold text-center">{category?.name}</p>
-
-      {/* Task list */}
-      <div className="flex flex-col gap-3">
-        {this_category_todos?.map((todo) => (
-          <Card
-            onClick={() => handleShowTodo(todo)}
-            key={todo.id}
-            category={category}
-            todo={todo}
+      <div className="relative px-3 py-2 flex flex-col">
+        {!this_category_todos?.length && (
+          <CloseButton
+            onClick={deleteCategory}
+            styles="absolute top-0 right-0"
           />
-        ))}
-      </div>
-      <button
-        onClick={() => setshowAddTask(true)}
-        className={`border-dashed border-[1.5px] mt-3 rounded-md px-3 py-2 bg-slate-100 hover:bg-slate-200 flex flex-row items-center gap-1 justify-center
+        )}
+        <p className="text-xl font-bold text-center">{category?.name}</p>
+
+        {/* Task list */}
+        <div className="flex flex-col gap-3">
+          {this_category_todos?.map((todo) => (
+            <Card
+              onClick={() => handleShowTodo(todo)}
+              key={todo.id}
+              category={category}
+              todo={todo}
+            />
+          ))}
+        </div>
+        <button
+          onClick={() => setshowAddTask(true)}
+          className={`border-dashed border-[1.5px] mt-3 rounded-md px-3 py-2 bg-slate-100 hover:bg-slate-200 flex flex-row items-center gap-1 justify-center
         `}
-      >
-        <FontAwesomeIcon icon={faPlus} />
-        Add task
-      </button>
+        >
+          <FontAwesomeIcon icon={faPlus} />
+          Add task
+        </button>
+      </div>
+
       {showAddTask && (
         <Modal onClickBackdrop={() => setshowAddTask(false)}>
           <AddTask
-            category_id={category?.id}
+            category={category}
             onClose={() => setshowAddTask(false)}
             onSubmit={() => setshowAddTask(false)}
           />
