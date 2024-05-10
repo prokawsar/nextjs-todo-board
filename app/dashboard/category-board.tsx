@@ -10,6 +10,7 @@ import { Category, Todo } from "@/types/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
+import CloseButton from "@/components/CloseButton";
 
 type Props = {
   category: Category;
@@ -19,7 +20,7 @@ type Props = {
 export default function CategoryBoard({ category, todos }: Props) {
   const [showAddTask, setshowAddTask] = useState(false);
   const [showCardDetails, setshowCardDetails] = useState(false);
-  const [todoData, setTodoData] = useState({} as Todo);
+  const [todoData, setTodoData] = useState(({} as Todo) || null);
   const supabase = createClient();
   const { user, setUser } = useUserStore();
   const userData = supabase.auth.getUser();
@@ -28,6 +29,11 @@ export default function CategoryBoard({ category, todos }: Props) {
   if (!user) {
     userData.then((res) => setUser(res.data.user));
   }
+
+  // Filtering todos here instead passing all todos
+  const this_category_todos = todos?.filter(
+    (todo) => todo.category == category.id
+  );
 
   const handleShowTodo = (data: any) => {
     setshowCardDetails(true);
@@ -52,18 +58,28 @@ export default function CategoryBoard({ category, todos }: Props) {
     router.refresh();
   };
 
+  const deleteCategory = async () => {
+    const { error } = await supabase
+      .from("categories")
+      .delete()
+      .eq("id", category.id);
+  };
+
   return (
     <div
       draggable
       onDrop={(e) => handleDrop(e)}
       onDragOver={(e) => e.preventDefault()}
-      className="bg-slate-100 rounded-md px-3 py-2 flex flex-col h-fit"
+      className="bg-slate-100 relative rounded-md px-3 py-2 flex flex-col h-fit"
     >
+      {!this_category_todos?.length && (
+        <CloseButton onClick={deleteCategory} styles="absolute top-0 right-0" />
+      )}
       <p className="text-xl font-bold text-center">{category?.name}</p>
 
       {/* Task list */}
       <div className="flex flex-col gap-3">
-        {todos?.map((todo) => (
+        {this_category_todos?.map((todo) => (
           <Card
             onClick={() => handleShowTodo(todo)}
             key={todo.id}
@@ -94,7 +110,7 @@ export default function CategoryBoard({ category, todos }: Props) {
         <CardDetails
           data={todoData}
           showDrawer={showCardDetails}
-          setShowDrawer={() => setshowCardDetails(false)}
+          setShowDrawer={() => (setshowCardDetails(false), setTodoData(null))}
         />
       )}
     </div>

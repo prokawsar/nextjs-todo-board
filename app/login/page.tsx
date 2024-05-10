@@ -22,6 +22,9 @@ export default function Login({
     });
 
     if (error) {
+      if (error?.status >= 300 || error?.status <= 400) {
+        return redirect("/login?message=Please check your connection");
+      }
       return redirect("/login?message=Could not authenticate user");
     }
 

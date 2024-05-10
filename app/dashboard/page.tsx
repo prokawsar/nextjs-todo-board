@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import AddCategory from "./add-category";
 import CategoryBoard from "./category-board";
 
-export default async function ProtectedPage() {
+export default async function Dashboard() {
   const supabase = createClient();
 
   const {
@@ -17,12 +17,13 @@ export default async function ProtectedPage() {
   const { data: categories } = await supabase.from("categories").select();
   const { data: todos } = await supabase.from("todos").select();
 
-  console.log(categories, todos);
   return (
     <div className="flex-1 w-full flex flex-col items-center max-w-7xl">
       <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-purple-700 to-transparent" />
 
-      <div className={`grid grid-cols-5 gap-x-2 w-full`}>
+      <div
+        className={`grid gap-x-2 w-full auto-cols-[16rem] grid-flow-col overflow-x-auto h-[85vh]`}
+      >
         {categories?.map((category) => (
           <CategoryBoard category={category} todos={todos} key={category.id} />
         ))}

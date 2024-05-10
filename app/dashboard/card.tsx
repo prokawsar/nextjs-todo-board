@@ -19,9 +19,7 @@ export default function Card({ category, todo, onClick }: Props) {
       }}
       data-id={`card-${todo?.id}`}
       draggable
-      className={`${
-        todo?.category == category?.id ? "" : "hidden"
-      } bg-white p-2 rounded-md border cursor-pointer hover:bg-slate-50 hover:border-slate-800`}
+      className={` bg-white p-2 rounded-md border cursor-pointer hover:bg-slate-50 hover:border-slate-800`}
     >
       <p className="">{todo?.title}</p>
       <p className="truncate text-slate-500">{todo?.description}</p>
