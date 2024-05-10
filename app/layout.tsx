@@ -3,6 +3,7 @@ import "./globals.css";
 import { createClient } from "@/utils/supabase/server";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+// import GlobalLoader from "@/components/GlobalLoader";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -25,6 +26,7 @@ export default function RootLayout({
         <main className="min-h-screen flex flex-col items-center">
           <Header />
           {children}
+          {/* <GlobalLoader /> */}
           <Footer />
         </main>
       </body>

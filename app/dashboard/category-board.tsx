@@ -20,7 +20,7 @@ type Props = {
 export default function CategoryBoard({ category, todos }: Props) {
   const [showAddTask, setshowAddTask] = useState(false);
   const [showCardDetails, setshowCardDetails] = useState(false);
-  const [todoData, setTodoData] = useState(({} as Todo) || null);
+  const [todoData, setTodoData] = useState<Todo | null>(null);
   const supabase = createClient();
   const { user, setUser } = useUserStore();
   const userData = supabase.auth.getUser();
@@ -54,7 +54,6 @@ export default function CategoryBoard({ category, todos }: Props) {
     if (error) {
       console.error(error);
     }
-
     router.refresh();
   };
 
@@ -71,7 +70,6 @@ export default function CategoryBoard({ category, todos }: Props) {
 
   return (
     <div
-      draggable
       onDrop={(e) => handleDrop(e)}
       onDragOver={(e) => e.preventDefault()}
       className="bg-slate-100 rounded-md flex flex-col h-fit"

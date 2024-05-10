@@ -2,7 +2,7 @@
 import CloseButton from "@/components/CloseButton";
 import { useUserStore } from "@/store";
 import { createClient } from "@/utils/supabase/client";
-import { faMultiply } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -16,7 +16,7 @@ export default function AddCategory() {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    console.log(formData);
+
     const supabase = createClient();
     if (!formData.get("name")) return;
 
@@ -34,10 +34,11 @@ export default function AddCategory() {
     <div className="bg-slate-100 rounded-md px-3 py-5 flex flex-col justify-center h-fit">
       <button
         onClick={() => setShowAddCategory(true)}
-        className={`border-dashed border-[1.5px]  rounded-md px-3 py-2 bg-slate-100 hover:bg-slate-200
+        className={`border-dashed border-[1.5px] flex gap-1 justify-center items-center rounded-md px-3 py-2 bg-slate-100 hover:bg-slate-200
         ${showAddCategory ? "hidden" : ""}
         `}
       >
+        <FontAwesomeIcon icon={faPlus} />
         Add category
       </button>
 
