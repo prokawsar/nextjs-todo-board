@@ -63,6 +63,9 @@ export default function CategoryBoard({ category, todos }: Props) {
       .from("categories")
       .delete()
       .eq("id", category.id);
+    if (error) {
+      console.error(error);
+    }
     router.refresh();
   };
 
@@ -73,7 +76,7 @@ export default function CategoryBoard({ category, todos }: Props) {
       onDragOver={(e) => e.preventDefault()}
       className="bg-slate-100 rounded-md flex flex-col h-fit"
     >
-      <div className="flex flex-col h-full px-3 py-2 relative">
+      <div className="relative px-3 py-2 flex flex-col">
         {!this_category_todos?.length && (
           <CloseButton
             onClick={deleteCategory}
@@ -117,7 +120,7 @@ export default function CategoryBoard({ category, todos }: Props) {
         <CardDetails
           data={todoData}
           showDrawer={showCardDetails}
-          setShowDrawer={() => (setshowCardDetails(false), setTodoData(null))}
+          setShowDrawer={() => setshowCardDetails(false)}
         />
       )}
     </div>
