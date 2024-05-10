@@ -110,7 +110,7 @@ export default function CategoryBoard({ category, todos }: Props) {
         <CardDetails
           data={todoData}
           showDrawer={showCardDetails}
-          setShowDrawer={() => (setshowCardDetails(false), setTodoData(null))}
+          setShowDrawer={() => setshowCardDetails(false)}
         />
       )}
     </div>
