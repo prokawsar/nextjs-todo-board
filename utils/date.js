@@ -5,7 +5,7 @@ export function dateDiff(expired_day) {
   const timeDiff = date2.getTime() - date1.getTime();
   return Math.ceil(timeDiff / (1000 * 3600 * 24));
 }
-export function niceDate(date, long = true) {
+export function niceDate(date, long = true, time = false) {
   const config = {
     year: "numeric",
     month: "long",
@@ -15,5 +15,8 @@ export function niceDate(date, long = true) {
   if (long) {
     config.weekday = "long";
   }
-  return new Date(date).toLocaleDateString("en-US", config);
+  return (
+    new Date(date).toLocaleDateString("en-US", config) +
+    (time ? " " + new Date(date).toLocaleTimeString() : "")
+  );
 }

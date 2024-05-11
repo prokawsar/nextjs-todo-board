@@ -46,8 +46,9 @@ export default function AddTask({ category, onClose, onSubmit }: AddTaskProps) {
     router.refresh();
   };
 
-  let defaultDate = new Date();
-  defaultDate.setDate(defaultDate.getDate() + 3);
+  const today = new Date();
+  today.setDate(today.getDate() + 3);
+  const defaultDate = today.toISOString().slice(0, 10);
 
   return (
     <div className="relative bg-white p-4 rounded-md space-y-6 ">
@@ -82,7 +83,7 @@ export default function AddTask({ category, onClose, onSubmit }: AddTaskProps) {
             autoComplete="off"
             name="expire"
             type="date"
-            defaultValue={defaultDate.toLocaleDateString()}
+            defaultValue={defaultDate}
             className="w-full rounded p-2 border  focus:outline-slate-400"
           />
           <button

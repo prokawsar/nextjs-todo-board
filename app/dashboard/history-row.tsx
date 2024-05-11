@@ -13,7 +13,7 @@ export default function HistoryRow({ history, todo }: DataProp) {
       </p>
       <p className={`${history.from && history.to ? "block" : "hidden"}`}>
         Card has been moved from {history.from} to {history.to} on{" "}
-        {niceDate(history.created_at, false)}
+        {niceDate(history.created_at, false, true)}
       </p>
     </div>
   );

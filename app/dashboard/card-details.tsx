@@ -151,7 +151,7 @@ export default function CardDetails({
             <div
               className={`${
                 todoHistory ? "flex" : "hidden"
-              } flex-col gap-2 bg-slate-50 p-2 border rounded mt-2`}
+              } flex-col gap-2 bg-slate-50 p-2 border rounded mt-2 max-h-80 overflow-y-auto`}
             >
               {todoHistory &&
                 todoHistory.map((history: History) => (
