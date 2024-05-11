@@ -37,7 +37,7 @@ export default async function Login({
 
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
-      <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
+      <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2">
         {searchParams?.message && (
           <p className="mt-4 p-4 bg-red-100 border border-red-500 text-slate-600 text-center">
             {searchParams.message}
@@ -71,7 +71,7 @@ export default async function Login({
         />
         <SubmitButton
           formAction={signIn}
-          className="bg-slate-500 hover:bg-slate-600 text-white rounded-md px-4 py-2 text-foreground mb-2"
+          className="bg-slate-500 hover:bg-slate-600 text-white rounded-md px-4 py-2 mb-2"
           pendingText="Signing In..."
         >
           Sign In

@@ -16,6 +16,7 @@ export default function Card({ category, todo, onClick }: Props) {
       onDragStart={(e) => {
         e.stopPropagation();
         e.dataTransfer.setData("card", `${todo?.id}`);
+        e.dataTransfer.setData("category_id", `${todo?.category}`);
       }}
       data-id={`card-${todo?.id}`}
       draggable

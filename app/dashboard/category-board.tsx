@@ -42,8 +42,10 @@ export default function CategoryBoard({ category, todos }: Props) {
 
   const handleDrop = async (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+    setIsDraggingOver(false);
     const todo_id = e.dataTransfer.getData("card");
-    if (!todo_id) return;
+    const category_id = e.dataTransfer.getData("category_id");
+    if (!todo_id || category.id.toString() == category_id) return;
 
     const { error } = await supabase
       .from("todos")
@@ -68,11 +70,23 @@ export default function CategoryBoard({ category, todos }: Props) {
     router.refresh();
   };
 
+  const [isDraggingOver, setIsDraggingOver] = useState(false);
+
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDraggingOver(true);
+  };
+
   return (
     <div
       onDrop={(e) => handleDrop(e)}
-      onDragOver={(e) => e.preventDefault()}
-      className="bg-slate-100 rounded-md flex flex-col h-fit"
+      onDragLeave={() => setIsDraggingOver(false)}
+      onDragOver={(e) => handleDragOver(e)}
+      className={`bg-slate-100 rounded-md flex flex-col h-fit ${
+        isDraggingOver
+          ? "border-dashed border-2 border-gray-400 bg-white bg-opacity-40"
+          : ""
+      }`}
     >
       <div className="relative px-3 py-2 flex flex-col">
         {!this_category_todos?.length && (
@@ -96,7 +110,7 @@ export default function CategoryBoard({ category, todos }: Props) {
         </div>
         <button
           onClick={() => setshowAddTask(true)}
-          className={`border-dashed border-[1.5px] mt-3 rounded-md px-3 py-2 bg-slate-100 hover:bg-slate-200 flex flex-row items-center gap-1 justify-center
+          className={`border-dashed border-[1.5px] border-slate-400 mt-3 rounded-md px-3 py-2 bg-slate-100 hover:bg-slate-200 flex flex-row items-center gap-1 justify-center
         `}
         >
           <FontAwesomeIcon icon={faPlus} />

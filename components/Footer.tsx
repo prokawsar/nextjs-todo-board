@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer className="w-full pb-6 flex flex-col justify-center text-center text-xs">
-      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-6" />
+      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-slate-600/10 to-transparent my-6" />
       <p>
         Powered by{" "}
         <a

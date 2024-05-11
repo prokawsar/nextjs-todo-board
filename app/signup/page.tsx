@@ -46,7 +46,7 @@ export default async function Signup({
 
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
-      <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
+      <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2">
         {searchParams?.message && (
           <p className="mt-4 p-4 bg-red-100 border border-red-500 text-slate-600 text-center">
             {searchParams.message}
@@ -75,7 +75,7 @@ export default async function Signup({
         />
         <SubmitButton
           formAction={signUp}
-          className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
+          className="border border-slate-400 rounded-md px-4 py-2 text-slate-800 mb-2"
           pendingText="Signing Up..."
         >
           Sign Up
