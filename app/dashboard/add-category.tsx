@@ -10,14 +10,20 @@ import { FormEvent, useState } from "react";
 export default function AddCategory() {
   const [showAddCategory, setShowAddCategory] = useState(false);
   const router = useRouter();
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
+  const supabase = createClient();
+
+  const userData = supabase.auth.getUser();
+
+  if (!user) {
+    userData.then((res) => setUser(res.data.user));
+  }
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
 
-    const supabase = createClient();
     if (!formData.get("name")) return;
 
     const { error, data } = await supabase.from("categories").insert({
@@ -27,6 +33,7 @@ export default function AddCategory() {
 
     if (!error) {
       router.refresh();
+      setShowAddCategory(false);
     }
   };
 
