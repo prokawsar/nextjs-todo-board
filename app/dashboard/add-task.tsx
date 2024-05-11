@@ -88,7 +88,7 @@ export default function AddTask({ category, onClose, onSubmit }: AddTaskProps) {
           />
           <button
             type="submit"
-            className="my-1 bg-purple-100 hover:bg-purple-500 hover:text-white border border-blue-700 p-2  rounded-md"
+            className="my-1 bg-purple-500 hover:bg-purple-600 hover:text-white border border-blue-700 p-2  rounded-md"
           >
             Add
           </button>

@@ -20,7 +20,7 @@ export default function CardDetails({
   setShowDrawer,
 }: Props) {
   const [updateLoading, setUpdateLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [todoHistory, setHistory] = useState<any>();
   const supabase = createClient();
   const router = useRouter();
@@ -159,14 +159,35 @@ export default function CardDetails({
                 ))}
             </div>
             <div className="flex justify-between mt-5">
-              <button
-                type="button"
-                onClick={() => handleDelete()}
-                className="border px-3 py-1 flex items-center gap-1 rounded-md hover:bg-slate-100 w-auto"
-              >
-                <FontAwesomeIcon icon={faTrashAlt} size="xs" />
-                Delete
-              </button>
+              {deleteConfirm && (
+                <div className="flex flex-row items-center">
+                  <button
+                    type="button"
+                    onClick={() => setDeleteConfirm(false)}
+                    className="border border-r-0 border-slate-500 px-3 py-1 rounded-tl-md rounded-bl-md hover:bg-slate-100 w-auto"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleDelete()}
+                    className="border border-l-0 border-green-600 bg-green-600 hover:bg-green-700 text-white px-3 py-1 flex items-center rounded-tr-md rounded-br-md"
+                  >
+                    Confirm
+                  </button>
+                </div>
+              )}
+              {!deleteConfirm && (
+                <button
+                  type="button"
+                  onClick={() => setDeleteConfirm(true)}
+                  className="border px-3 py-1 flex items-center gap-1 rounded-md hover:bg-slate-100 w-auto"
+                >
+                  <FontAwesomeIcon icon={faTrashAlt} size="xs" />
+                  Delete
+                </button>
+              )}
 
               <button
                 type="submit"
