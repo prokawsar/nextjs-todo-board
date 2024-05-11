@@ -16,10 +16,10 @@ export const useUserStore = create<UserState>((set) => ({
 
 interface LoaderState {
   isLoading: boolean;
-  setGlobalLoading: (param: any) => void;
+  setIsLoading: (isLoading: boolean) => void;
 }
 
-export const useLoadingStore = create<LoaderState>((set) => ({
+export const useLoadingStore = create<LoaderState>()((set) => ({
   isLoading: false,
-  setGlobalLoading: (value: boolean) => set(() => ({ isLoading: value })),
+  setIsLoading: (isLoading: boolean) => set({ isLoading }),
 }));

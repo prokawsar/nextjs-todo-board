@@ -1,5 +1,6 @@
+"use client";
 import CloseButton from "@/components/CloseButton";
-import { useUserStore } from "@/store";
+import { useLoadingStore, useUserStore } from "@/store";
 import { Category } from "@/types/types";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
@@ -13,10 +14,12 @@ interface AddTaskProps {
 export default function AddTask({ category, onClose, onSubmit }: AddTaskProps) {
   const { user } = useUserStore();
   const router = useRouter();
+  const { setIsLoading } = useLoadingStore();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    setIsLoading(true);
     const formData = new FormData(event.currentTarget);
     const supabase = createClient();
     if (!formData.get("title")) return;
@@ -31,6 +34,7 @@ export default function AddTask({ category, onClose, onSubmit }: AddTaskProps) {
         category: category?.id,
       })
       .select();
+    setIsLoading(false);
     if (error) {
       console.error(error);
       return;

@@ -1,5 +1,5 @@
 import CloseButton from "@/components/CloseButton";
-import { useUserStore } from "@/store";
+import { useLoadingStore, useUserStore } from "@/store";
 import { History, Todo } from "@/types/types";
 import { createClient } from "@/utils/supabase/client";
 import { faSave, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
@@ -25,6 +25,7 @@ export default function CardDetails({
   const supabase = createClient();
   const router = useRouter();
   const { user } = useUserStore();
+  const { setIsLoading } = useLoadingStore();
 
   useEffect(() => {
     supabase
@@ -40,6 +41,7 @@ export default function CardDetails({
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
 
     const formData = new FormData(event.currentTarget);
     if (!formData.get("title")) return;
@@ -53,6 +55,8 @@ export default function CardDetails({
         expire_at: formData.get("expire"),
       })
       .eq("id", data?.id);
+    setIsLoading(false);
+
     if (error) {
       console.error(error);
       return;
@@ -61,11 +65,14 @@ export default function CardDetails({
   };
 
   const handleDelete = async () => {
+    setIsLoading(true);
+
     const { error } = await supabase.from("todos").delete().eq("id", data?.id);
 
     if (!error) {
       setShowDrawer ? setShowDrawer() : "";
     }
+    setIsLoading(false);
   };
 
   return (

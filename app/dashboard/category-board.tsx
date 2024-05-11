@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/client";
 import { DragEvent, useEffect, useState } from "react";
 import AddTask from "./add-task";
 import Card from "./card";
-import { useUserStore } from "@/store";
+import { useLoadingStore, useUserStore } from "@/store";
 import CardDetails from "./card-details";
 import { Category, Todo } from "@/types/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,9 +22,8 @@ export default function CategoryBoard({ category, todos }: Props) {
   const [showCardDetails, setshowCardDetails] = useState(false);
   const [todoData, setTodoData] = useState<Todo | null>(null);
   const supabase = createClient();
-  const { user, setUser } = useUserStore();
-  const userData = supabase.auth.getUser();
   const router = useRouter();
+  const { setIsLoading } = useLoadingStore();
 
   useEffect(() => {
     const channel = supabase
@@ -47,10 +46,6 @@ export default function CategoryBoard({ category, todos }: Props) {
     };
   }, [supabase, router]);
 
-  if (!user) {
-    userData.then((res) => setUser(res.data.user));
-  }
-
   // Filtering todos here instead passing all todos
   const this_category_todos = todos?.filter(
     (todo) => todo.category == category.id
@@ -63,6 +58,8 @@ export default function CategoryBoard({ category, todos }: Props) {
 
   const handleDrop = async (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+
+    setIsLoading(true);
     setIsDraggingOver(false);
     const todo_id = e.dataTransfer.getData("card");
     const category_id = e.dataTransfer.getData("category_id");
@@ -77,7 +74,7 @@ export default function CategoryBoard({ category, todos }: Props) {
     if (error) {
       console.error(error);
     }
-
+    setIsLoading(false);
     const { data } = await supabase.from("history").insert({
       todo: todo_id,
       from: category_id,
@@ -86,6 +83,7 @@ export default function CategoryBoard({ category, todos }: Props) {
   };
 
   const deleteCategory = async () => {
+    setIsLoading(true);
     const { error } = await supabase
       .from("categories")
       .delete()
@@ -94,6 +92,7 @@ export default function CategoryBoard({ category, todos }: Props) {
       console.error(error);
     }
     router.refresh();
+    setIsLoading(false);
   };
 
   const [isDraggingOver, setIsDraggingOver] = useState(false);
