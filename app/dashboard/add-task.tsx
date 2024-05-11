@@ -21,17 +21,27 @@ export default function AddTask({ category, onClose, onSubmit }: AddTaskProps) {
     const supabase = createClient();
     if (!formData.get("title")) return;
 
-    const { error, data } = await supabase.from("todos").insert({
-      title: formData.get("title"),
-      description: formData.get("description"),
-      user: user?.id,
-      expire_at: formData.get("expire"),
-      category: category?.id,
-    });
+    const { error, data } = await supabase
+      .from("todos")
+      .insert({
+        title: formData.get("title"),
+        description: formData.get("description"),
+        user: user?.id,
+        expire_at: formData.get("expire"),
+        category: category?.id,
+      })
+      .select();
     if (error) {
       console.error(error);
       return;
     }
+
+    const history_res = await supabase.from("history").insert({
+      todo: data[0].id,
+      from: null,
+      to: null,
+    });
+
     onSubmit ? onSubmit() : "";
     router.refresh();
   };

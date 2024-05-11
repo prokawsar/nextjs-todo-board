@@ -28,8 +28,16 @@ export default function Card({ category, todo, onClick }: Props) {
       </p>
 
       {todo?.expire_at && dateDiff(todo?.expire_at) <= 3 ? (
-        <span className=" bg-red-100 text-red-800 border border-red-800 text-xs px-2.5 rounded">
-          Expired in {dateDiff(todo?.expire_at)} days
+        <span
+          className={`${
+            dateDiff(todo?.expire_at) < 0
+              ? "text-red-800 bg-red-100"
+              : "text-yellow-800 bg-yellow-100"
+          }  border border-red-800 text-xs px-2.5 rounded`}
+        >
+          {dateDiff(todo?.expire_at) < 0
+            ? "Expired"
+            : `Expires in ${dateDiff(todo?.expire_at)} days`}
         </span>
       ) : (
         <p className="truncate text-slate-500 gap-1 mt-2 flex flex-row items-center text-xs">

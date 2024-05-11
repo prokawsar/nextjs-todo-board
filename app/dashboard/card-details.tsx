@@ -1,11 +1,12 @@
 import CloseButton from "@/components/CloseButton";
 import { useUserStore } from "@/store";
-import { Todo } from "@/types/types";
+import { History, Todo } from "@/types/types";
 import { createClient } from "@/utils/supabase/client";
 import { faSave, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
+import HistoryRow from "./history-row";
 
 type Props = {
   data: Todo | null;
@@ -20,9 +21,22 @@ export default function CardDetails({
 }: Props) {
   const [updateLoading, setUpdateLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [todoHistory, setHistory] = useState<any>();
   const supabase = createClient();
   const router = useRouter();
   const { user } = useUserStore();
+
+  useEffect(() => {
+    supabase
+      .from("history")
+      .select()
+      .eq("todo", data?.id)
+      .then(({ data }) => {
+        if (data?.length) {
+          setHistory(data);
+        }
+      });
+  }, []);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -133,7 +147,18 @@ export default function CardDetails({
               />
             </div>
 
-            <div className="flex justify-between">
+            <p className="text-sm font-medium text-slate-800">History</p>
+            <div
+              className={`${
+                todoHistory ? "flex" : "hidden"
+              } flex-col gap-2 bg-slate-50 p-2 border rounded mt-2`}
+            >
+              {todoHistory &&
+                todoHistory.map((history: History) => (
+                  <HistoryRow history={history} todo={data} />
+                ))}
+            </div>
+            <div className="flex justify-between mt-5">
               <button
                 type="button"
                 onClick={() => handleDelete()}

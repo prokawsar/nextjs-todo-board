@@ -56,6 +56,13 @@ export default function CategoryBoard({ category, todos }: Props) {
     if (error) {
       console.error(error);
     }
+
+    const { data } = await supabase.from("history").insert({
+      todo: todo_id,
+      from: category_id,
+      to: category.id,
+    });
+
     router.refresh();
   };
 

@@ -12,3 +12,10 @@ export type Category = {
   name: string;
   user: string;
 };
+
+export type History = {
+  id: number;
+  todo: number;
+  from: number;
+  to: number;
+};
