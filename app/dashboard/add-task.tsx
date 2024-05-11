@@ -36,14 +36,13 @@ export default function AddTask({ category, onClose, onSubmit }: AddTaskProps) {
       return;
     }
 
-    const history_res = await supabase.from("history").insert({
+    await supabase.from("history").insert({
       todo: data[0].id,
       from: null,
       to: null,
     });
 
     onSubmit ? onSubmit() : "";
-    router.refresh();
   };
 
   const today = new Date();

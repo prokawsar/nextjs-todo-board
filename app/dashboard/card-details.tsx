@@ -58,7 +58,6 @@ export default function CardDetails({
       return;
     }
     setShowDrawer ? setShowDrawer() : "";
-    router.refresh();
   };
 
   const handleDelete = async () => {
@@ -66,7 +65,6 @@ export default function CardDetails({
 
     if (!error) {
       setShowDrawer ? setShowDrawer() : "";
-      router.refresh();
     }
   };
 

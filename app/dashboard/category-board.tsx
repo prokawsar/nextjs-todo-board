@@ -1,7 +1,7 @@
 "use client";
 import Modal from "@/components/Modal";
 import { createClient } from "@/utils/supabase/client";
-import { DragEvent, useState } from "react";
+import { DragEvent, useEffect, useState } from "react";
 import AddTask from "./add-task";
 import Card from "./card";
 import { useUserStore } from "@/store";
@@ -25,6 +25,27 @@ export default function CategoryBoard({ category, todos }: Props) {
   const { user, setUser } = useUserStore();
   const userData = supabase.auth.getUser();
   const router = useRouter();
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("realtime todos")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "todos",
+        },
+        () => {
+          router.refresh();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase, router]);
 
   if (!user) {
     userData.then((res) => setUser(res.data.user));
@@ -62,8 +83,6 @@ export default function CategoryBoard({ category, todos }: Props) {
       from: category_id,
       to: category.id,
     });
-
-    router.refresh();
   };
 
   const deleteCategory = async () => {
