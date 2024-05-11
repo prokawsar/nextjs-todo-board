@@ -18,4 +18,5 @@ export type History = {
   todo: number;
   from: number;
   to: number;
+  created_at: Date;
 };

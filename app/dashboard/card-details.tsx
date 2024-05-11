@@ -155,7 +155,7 @@ export default function CardDetails({
             >
               {todoHistory &&
                 todoHistory.map((history: History) => (
-                  <HistoryRow history={history} todo={data} />
+                  <HistoryRow key={history.id} history={history} todo={data} />
                 ))}
             </div>
             <div className="flex justify-between mt-5">

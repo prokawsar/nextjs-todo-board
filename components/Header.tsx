@@ -1,6 +1,4 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AuthButton from "./AuthButton";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
 
 export default function Header() {
   return (
@@ -9,13 +7,7 @@ export default function Header() {
         <a href="/">
           <h1 className="text-2xl font-bold text-slate-600">Todo Board</h1>
         </a>
-        <div className="flex flex-row gap-2 items-center">
-          <FontAwesomeIcon
-            icon={faBell}
-            className="cursor-pointer hover:text-slate-600"
-          />
-          {<AuthButton />}
-        </div>
+        <div className="flex flex-row gap-2 items-center">{<AuthButton />}</div>
       </div>
     </nav>
   );

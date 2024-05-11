@@ -1,4 +1,5 @@
 import { History, Todo } from "@/types/types";
+import { niceDate } from "@/utils/date";
 
 type DataProp = {
   history: History;
@@ -11,7 +12,8 @@ export default function HistoryRow({ history, todo }: DataProp) {
         Created ticket {todo.title}
       </p>
       <p className={`${history.from && history.to ? "block" : "hidden"}`}>
-        {todo.title} Moved from {history.from} to {history.to}
+        Card has been moved from {history.from} to {history.to} on{" "}
+        {niceDate(history.created_at, false)}
       </p>
     </div>
   );
