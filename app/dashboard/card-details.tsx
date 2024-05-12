@@ -137,8 +137,7 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
                   type="date"
                   id="expire"
                   name="expire"
-                  onChange={onChange}
-                  value={
+                  defaultValue={
                     todoData.expire_at && new Date(todoData.expire_at)?.toISOString()?.substr(0, 10)
                   }
                   className="block w-full  rounded-lg border bg-gray-50 p-2.5 text-sm text-gray-900 focus:outline-slate-400 "

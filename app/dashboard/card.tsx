@@ -31,7 +31,7 @@ export default function Card({ todo, onClick }: Props) {
             dateDiff(todo?.expire_at) < 0
               ? 'bg-red-100 text-red-800'
               : 'bg-yellow-100 text-yellow-800'
-          }  rounded border border-red-800 px-2.5 text-xs font-medium`}
+          }  mt-2 rounded border border-red-800 px-2.5 text-xs font-medium`}
         >
           {dateDiff(todo?.expire_at) < 0
             ? 'Expired'
