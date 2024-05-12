@@ -1,33 +1,29 @@
-## Features
+## Todo Board
 
 ## Demo
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+You can view a fully working demo at [https://nextjs-todo-board.vercel.app/](https://nextjs-todo-board.vercel.app/).
 
-## Deploy to Vercel
-
-Vercel deployment will guide you through creating a Supabase account and project.
-
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
-
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
-
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+Demo credentials
+email: kawsariam@gmail.com
+pass: 123456
 
 ## Clone and run locally
 
 1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+   For using existing created database, secrets for `.env.local` are shared.
 
-2. Create a Next.js app using the Supabase Starter template npx command
+2. Clone this repo command
 
    ```bash
-   npx create-next-app -e with-supabase
+   git clone https://github.com/prokawsar/nextjs-todo-board.git
    ```
 
-3. Use `cd` to change into the app's directory
+3. Use `cd` to change into the app's directory and install dependencies
 
    ```bash
-   cd name-of-new-app
+   cd nextjs-todo-board
+   npm i
    ```
 
 4. Rename `.env.local.example` to `.env.local` and update the following:
@@ -45,16 +41,6 @@ If you wish to just develop locally and not deploy to Vercel, [follow the steps 
    npm run dev
    ```
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+   The app should now be running on [localhost:3000](http://localhost:3000/).
 
 > Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
-
-## Feedback and issues
-
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
-
-## More Supabase examples
-
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
