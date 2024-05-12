@@ -13,13 +13,12 @@ export default function Card({ category, todo, onClick }: Props) {
   return (
     <div
       onClick={() => (onClick ? onClick() : "")}
+      draggable
       onDragStart={(e) => {
         e.stopPropagation();
         e.dataTransfer.setData("card", `${todo?.id}`);
         e.dataTransfer.setData("category_id", `${todo?.category}`);
       }}
-      data-id={`card-${todo?.id}`}
-      draggable
       className={` bg-white p-2 flex flex-col gap-1 rounded-md border cursor-pointer hover:bg-slate-50 hover:border-slate-800`}
     >
       <p className="">{todo?.title}</p>

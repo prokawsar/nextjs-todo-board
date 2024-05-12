@@ -9,15 +9,10 @@ import HistoryRow from "./history-row";
 
 type Props = {
   data: Todo | null;
-  showDrawer: boolean;
   setShowDrawer: Function;
 };
 
-export default function CardDetails({
-  data,
-  showDrawer,
-  setShowDrawer,
-}: Props) {
+export default function CardDetails({ data, setShowDrawer }: Props) {
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [todoHistory, setHistory] = useState<any>();
   const supabase = createClient();
@@ -65,19 +60,19 @@ export default function CardDetails({
     setIsLoading(true);
 
     const { error } = await supabase.from("todos").delete().eq("id", data?.id);
-
     if (!error) {
       setShowDrawer ? setShowDrawer() : "";
     }
+
     setIsLoading(false);
   };
+
+  const onChange = () => {};
 
   return (
     data && (
       <div
-        className={`fixed w-96 top-0 right-0 z-40 ${
-          showDrawer ? "flex" : "hidden"
-        }  h-screen pt-8 transition-all -translate-x-full bg-white border-l-[1.5px] border-gray-200 sm:translate-x-0 `}
+        className={`fixed w-96 top-0 right-0 z-40 h-screen pt-8 transition-all -translate-x-full bg-white border-l-[1.5px] border-gray-200 sm:translate-x-0 `}
         aria-label="sidebar"
       >
         <div className="h-full w-full px-3 pb-4 overflow-y-auto bg-white  relative">
@@ -103,7 +98,8 @@ export default function CardDetails({
               </label>
               <input
                 type="text"
-                defaultValue={data.title}
+                value={data.title}
+                onChange={onChange}
                 name="title"
                 id="title"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-slate-400 block w-full p-2.5"
@@ -122,7 +118,8 @@ export default function CardDetails({
               <textarea
                 id="description"
                 name="description"
-                defaultValue={data.description}
+                value={data.description}
+                onChange={onChange}
                 rows={4}
                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:outline-slate-400"
                 placeholder="Description..."
@@ -140,7 +137,8 @@ export default function CardDetails({
                 type="date"
                 id="expire"
                 name="expire"
-                defaultValue={
+                onChange={onChange}
+                value={
                   data.expire_at &&
                   new Date(data.expire_at)?.toISOString()?.substr(0, 10)
                 }
@@ -150,6 +148,10 @@ export default function CardDetails({
             </div>
 
             <p className="text-sm font-medium text-slate-800">History</p>
+            {!todoHistory && (
+              <p className="text-sm text-slate-600">History loading...</p>
+            )}
+
             <div
               className={`${
                 todoHistory ? "flex" : "hidden"
@@ -159,7 +161,6 @@ export default function CardDetails({
                 todoHistory.map((history: History) => (
                   <HistoryRow key={history.id} history={history} todo={data} />
                 ))}
-              {!todoHistory && <p>History loading...</p>}
             </div>
             <div className="flex justify-between mt-5">
               {deleteConfirm && (

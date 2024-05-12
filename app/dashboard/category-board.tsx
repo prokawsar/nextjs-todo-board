@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/client";
 import { DragEvent, useEffect, useState } from "react";
 import AddTask from "./add-task";
 import Card from "./card";
-import { useLoadingStore, useUserStore } from "@/store";
+import { useCardBoardStore, useLoadingStore } from "@/store";
 import CardDetails from "./card-details";
 import { Category, Todo } from "@/types/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,11 +19,12 @@ type Props = {
 
 export default function CategoryBoard({ category, todos }: Props) {
   const [showAddTask, setshowAddTask] = useState(false);
-  const [showCardDetails, setshowCardDetails] = useState(false);
   const [todoData, setTodoData] = useState<Todo | null>(null);
+  const [isDraggingOver, setIsDraggingOver] = useState(false);
   const supabase = createClient();
   const router = useRouter();
   const { setIsLoading } = useLoadingStore();
+  const { cardBoard, setCardBoard } = useCardBoardStore();
 
   useEffect(() => {
     const channel = supabase
@@ -52,7 +53,7 @@ export default function CategoryBoard({ category, todos }: Props) {
   );
 
   const handleShowTodo = (data: any) => {
-    setshowCardDetails(true);
+    setCardBoard(category.name);
     setTodoData(data);
   };
 
@@ -96,8 +97,6 @@ export default function CategoryBoard({ category, todos }: Props) {
     router.refresh();
     setIsLoading(false);
   };
-
-  const [isDraggingOver, setIsDraggingOver] = useState(false);
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -157,12 +156,8 @@ export default function CategoryBoard({ category, todos }: Props) {
         </Modal>
       )}
 
-      {showCardDetails && (
-        <CardDetails
-          data={todoData}
-          showDrawer={showCardDetails}
-          setShowDrawer={() => setshowCardDetails(false)}
-        />
+      {cardBoard === category.name && (
+        <CardDetails data={todoData} setShowDrawer={() => setCardBoard("")} />
       )}
     </div>
   );
