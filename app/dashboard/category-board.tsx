@@ -9,8 +9,8 @@ import CardDetails from "./card-details";
 import { Category, Todo } from "@/types/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { useRouter } from "next/navigation";
-import CloseButton from "@/components/CloseButton";
 
 type Props = {
   category: Category;
@@ -74,12 +74,14 @@ export default function CategoryBoard({ category, todos }: Props) {
     if (error) {
       console.error(error);
     }
-    setIsLoading(false);
+
     const { data } = await supabase.from("history").insert({
       todo: todo_id,
       from: category_id,
       to: category.id,
     });
+    router.refresh();
+    setIsLoading(false);
   };
 
   const deleteCategory = async () => {
@@ -115,10 +117,12 @@ export default function CategoryBoard({ category, todos }: Props) {
     >
       <div className="relative px-3 py-2 flex flex-col">
         {!this_category_todos?.length && (
-          <CloseButton
+          <button
             onClick={deleteCategory}
-            styles="absolute top-0 right-0"
-          />
+            className="absolute top-0 right-0 h-4 w-6"
+          >
+            <FontAwesomeIcon icon={faTrashAlt} size="xs" />
+          </button>
         )}
         <p className="text-xl font-bold text-center">{category?.name}</p>
 

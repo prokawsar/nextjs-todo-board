@@ -1,3 +1,4 @@
+import { Category, Todo } from "@/types/types";
 import { create } from "zustand";
 
 export type User = {
@@ -22,4 +23,18 @@ interface LoaderState {
 export const useLoadingStore = create<LoaderState>()((set) => ({
   isLoading: false,
   setIsLoading: (isLoading: boolean) => set({ isLoading }),
+}));
+
+interface dataState {
+  todos: Todo[];
+  categories: Category[];
+  setTodosData: (todos: Todo[]) => void;
+  setCategoryData: (todos: Category[]) => void;
+}
+
+export const useDataStore = create<dataState>()((set) => ({
+  todos: [],
+  categories: [],
+  setTodosData: (todos: Todo[]) => set({ todos: todos }),
+  setCategoryData: (categories: Category[]) => set({ categories: categories }),
 }));

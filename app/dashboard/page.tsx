@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import AddCategory from "./add-category";
 import CategoryBoard from "./category-board";
+import ClientDataLoader from "@/components/ClientDataLoader";
 
 export default async function Dashboard() {
   const supabase = createClient();
@@ -13,8 +14,14 @@ export default async function Dashboard() {
   if (!user) {
     return redirect("/login");
   }
-  const { data: categories } = await supabase.from("categories").select();
-  const { data: todos } = await supabase.from("todos").select();
+  const { data: categories } = await supabase
+    .from("categories")
+    .select()
+    .eq("user", user.id);
+  const { data: todos } = await supabase
+    .from("todos")
+    .select()
+    .eq("user", user.id);
 
   // Restricted access category for users
   const this_users_category = categories?.filter(
@@ -32,6 +39,7 @@ export default async function Dashboard() {
           <CategoryBoard category={category} todos={todos} key={category.id} />
         ))}
         {<AddCategory />}
+        {<ClientDataLoader />}
       </div>
     </div>
   );

@@ -4,7 +4,6 @@ import { History, Todo } from "@/types/types";
 import { createClient } from "@/utils/supabase/client";
 import { faSave, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/navigation";
 import { useState, FormEvent, useEffect } from "react";
 import HistoryRow from "./history-row";
 
@@ -19,11 +18,9 @@ export default function CardDetails({
   showDrawer,
   setShowDrawer,
 }: Props) {
-  const [updateLoading, setUpdateLoading] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [todoHistory, setHistory] = useState<any>();
   const supabase = createClient();
-  const router = useRouter();
   const { user } = useUserStore();
   const { setIsLoading } = useLoadingStore();
 
@@ -156,12 +153,13 @@ export default function CardDetails({
             <div
               className={`${
                 todoHistory ? "flex" : "hidden"
-              } flex-col gap-2 bg-slate-50 p-2 border rounded mt-2 max-h-80 overflow-y-auto`}
+              } animate-in flex-col gap-2 bg-slate-50 p-2 border rounded mt-2 max-h-80 overflow-y-auto`}
             >
               {todoHistory &&
                 todoHistory.map((history: History) => (
                   <HistoryRow key={history.id} history={history} todo={data} />
                 ))}
+              {!todoHistory && <p>History loading...</p>}
             </div>
             <div className="flex justify-between mt-5">
               {deleteConfirm && (
