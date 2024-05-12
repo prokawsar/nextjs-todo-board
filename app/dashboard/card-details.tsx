@@ -21,6 +21,7 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
   const { setIsLoading } = useLoadingStore()
 
   useEffect(() => {
+    setTodoData(data)
     supabase
       .from('history')
       .select()
@@ -30,7 +31,7 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
           setHistory(data)
         }
       })
-  }, [])
+  }, [data])
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()

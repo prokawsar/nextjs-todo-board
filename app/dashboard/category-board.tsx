@@ -118,12 +118,7 @@ export default function CategoryBoard({ category, todos }: Props) {
         {/* Task list */}
         <div className="flex flex-col gap-3">
           {this_category_todos?.map((todo) => (
-            <Card
-              onClick={() => handleShowTodo(todo)}
-              key={todo.id}
-              category={category}
-              todo={todo}
-            />
+            <Card onClick={() => handleShowTodo(todo)} key={todo.id} todo={todo} />
           ))}
         </div>
         <button

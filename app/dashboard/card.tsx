@@ -1,15 +1,14 @@
-import { Category, Todo } from '@/types/types'
+import { Todo } from '@/types/types'
 import { dateDiff, niceDate } from '@/utils/date'
 import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 type Props = {
-  category?: Category
   todo: Todo
   onClick?: () => void
 }
 
-export default function Card({ category, todo, onClick }: Props) {
+export default function Card({ todo, onClick }: Props) {
   return (
     <div
       onClick={() => (onClick ? onClick() : '')}
