@@ -4,17 +4,18 @@ import { History, Todo } from "@/types/types";
 import { createClient } from "@/utils/supabase/client";
 import { faSave, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent, useEffect, ChangeEvent } from "react";
 import HistoryRow from "./history-row";
 
 type Props = {
-  data: Todo | null;
+  data: Todo | undefined;
   setShowDrawer: Function;
 };
 
 export default function CardDetails({ data, setShowDrawer }: Props) {
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [todoHistory, setHistory] = useState<any>();
+  const [todoData, setTodoData] = useState<Todo | undefined>(data);
   const supabase = createClient();
   const { user } = useUserStore();
   const { setIsLoading } = useLoadingStore();
@@ -67,7 +68,15 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
     setIsLoading(false);
   };
 
-  const onChange = () => {};
+  const onChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = event.target;
+    setTodoData({
+      ...todoData,
+      [name]: value,
+    } as Todo);
+  };
 
   return (
     data && (
@@ -88,120 +97,126 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
               onClick={() => setShowDrawer(false)}
             />
           </div>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-5">
-              <label
-                htmlFor="title"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Title
-              </label>
-              <input
-                type="text"
-                value={data.title}
-                onChange={onChange}
-                name="title"
-                id="title"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-slate-400 block w-full p-2.5"
-                placeholder="title"
-                required
-              />
-            </div>
-
-            <div className="mb-5">
-              <label
-                htmlFor="description"
-                className="block mb-2 text-sm font-medium text-gray-900 "
-              >
-                Description
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                value={data.description}
-                onChange={onChange}
-                rows={4}
-                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:outline-slate-400"
-                placeholder="Description..."
-              ></textarea>
-            </div>
-
-            <div className="mb-5">
-              <label
-                htmlFor="expire"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Expiration date
-              </label>
-              <input
-                type="date"
-                id="expire"
-                name="expire"
-                onChange={onChange}
-                value={
-                  data.expire_at &&
-                  new Date(data.expire_at)?.toISOString()?.substr(0, 10)
-                }
-                className="bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:outline-slate-400 block w-full p-2.5 "
-                required
-              />
-            </div>
-
-            <p className="text-sm font-medium text-slate-800">History</p>
-            {!todoHistory && (
-              <p className="text-sm text-slate-600">History loading...</p>
-            )}
-
-            <div
-              className={`${
-                todoHistory ? "flex" : "hidden"
-              } animate-in flex-col gap-2 bg-slate-50 p-2 border rounded mt-2 max-h-80 overflow-y-auto`}
-            >
-              {todoHistory &&
-                todoHistory.map((history: History) => (
-                  <HistoryRow key={history.id} history={history} todo={data} />
-                ))}
-            </div>
-            <div className="flex justify-between mt-5">
-              {deleteConfirm && (
-                <div className="flex flex-row items-center">
-                  <button
-                    type="button"
-                    onClick={() => setDeleteConfirm(false)}
-                    className="border border-r-0 border-slate-500 px-3 py-1 rounded-tl-md rounded-bl-md hover:bg-slate-100 w-auto"
-                  >
-                    Cancel
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleDelete()}
-                    className="border border-l-0 border-green-600 bg-green-600 hover:bg-green-700 text-white px-3 py-1 flex items-center rounded-tr-md rounded-br-md"
-                  >
-                    Confirm
-                  </button>
-                </div>
-              )}
-              {!deleteConfirm && (
-                <button
-                  type="button"
-                  onClick={() => setDeleteConfirm(true)}
-                  className="border px-3 py-1 flex items-center gap-1 rounded-md hover:bg-slate-100 w-auto"
+          {todoData && (
+            <form onSubmit={handleSubmit}>
+              <div className="mb-5">
+                <label
+                  htmlFor="title"
+                  className="block mb-2 text-sm font-medium text-gray-900"
                 >
-                  <FontAwesomeIcon icon={faTrashAlt} size="xs" />
-                  Delete
-                </button>
+                  Title
+                </label>
+                <input
+                  type="text"
+                  value={todoData.title}
+                  onChange={onChange}
+                  name="title"
+                  id="title"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-slate-400 block w-full p-2.5"
+                  placeholder="title"
+                  required
+                />
+              </div>
+
+              <div className="mb-5">
+                <label
+                  htmlFor="description"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={todoData.description}
+                  onChange={onChange}
+                  rows={4}
+                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:outline-slate-400"
+                  placeholder="Description..."
+                ></textarea>
+              </div>
+
+              <div className="mb-5">
+                <label
+                  htmlFor="expire"
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                >
+                  Expiration date
+                </label>
+                <input
+                  type="date"
+                  id="expire"
+                  name="expire"
+                  onChange={onChange}
+                  value={
+                    todoData.expire_at &&
+                    new Date(todoData.expire_at)?.toISOString()?.substr(0, 10)
+                  }
+                  className="bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:outline-slate-400 block w-full p-2.5 "
+                  required
+                />
+              </div>
+
+              <p className="text-sm font-medium text-slate-800">History</p>
+              {!todoHistory && (
+                <p className="text-sm text-slate-600">History loading...</p>
               )}
 
-              <button
-                type="submit"
-                className="bg-purple-400 flex items-center gap-1 hover:bg-purple-600 px-3 py-1 rounded-md border text-white w-auto"
+              <div
+                className={`${
+                  todoHistory ? "flex" : "hidden"
+                } animate-in flex-col gap-2 bg-slate-50 p-2 border rounded mt-2 max-h-80 overflow-y-auto`}
               >
-                <FontAwesomeIcon icon={faSave} size="xs" />
-                Save
-              </button>
-            </div>
-          </form>
+                {todoHistory &&
+                  todoHistory.map((history: History) => (
+                    <HistoryRow
+                      key={history.id}
+                      history={history}
+                      todo={data}
+                    />
+                  ))}
+              </div>
+              <div className="flex justify-between mt-5">
+                {deleteConfirm && (
+                  <div className="flex flex-row items-center">
+                    <button
+                      type="button"
+                      onClick={() => setDeleteConfirm(false)}
+                      className="border border-r-0 border-slate-500 px-3 py-1 rounded-tl-md rounded-bl-md hover:bg-slate-100 w-auto"
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDelete()}
+                      className="border border-l-0 border-green-600 bg-green-600 hover:bg-green-700 text-white px-3 py-1 flex items-center rounded-tr-md rounded-br-md"
+                    >
+                      Confirm
+                    </button>
+                  </div>
+                )}
+                {!deleteConfirm && (
+                  <button
+                    type="button"
+                    onClick={() => setDeleteConfirm(true)}
+                    className="border px-3 py-1 flex items-center gap-1 rounded-md hover:bg-slate-100 w-auto"
+                  >
+                    <FontAwesomeIcon icon={faTrashAlt} size="xs" />
+                    Delete
+                  </button>
+                )}
+
+                <button
+                  type="submit"
+                  className="bg-purple-400 flex items-center gap-1 hover:bg-purple-600 px-3 py-1 rounded-md border text-white w-auto"
+                >
+                  <FontAwesomeIcon icon={faSave} size="xs" />
+                  Save
+                </button>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     )

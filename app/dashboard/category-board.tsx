@@ -19,7 +19,7 @@ type Props = {
 
 export default function CategoryBoard({ category, todos }: Props) {
   const [showAddTask, setshowAddTask] = useState(false);
-  const [todoData, setTodoData] = useState<Todo | null>(null);
+  const [todoData, setTodoData] = useState<Todo>();
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const supabase = createClient();
   const router = useRouter();
