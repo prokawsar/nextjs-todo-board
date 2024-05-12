@@ -1,9 +1,9 @@
 export default function Footer() {
   return (
-    <footer className="w-full pb-6 flex flex-col justify-center text-center text-xs">
-      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-slate-600/10 to-transparent my-6" />
+    <footer className="flex w-full flex-col justify-center pb-6 text-center text-xs">
+      <div className="my-6 w-full bg-gradient-to-r from-transparent via-slate-600/10 to-transparent p-[1px]" />
       <p>
-        Powered by{" "}
+        Powered by{' '}
         <a
           href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
           target="_blank"
@@ -14,5 +14,5 @@ export default function Footer() {
         </a>
       </p>
     </footer>
-  );
+  )
 }
