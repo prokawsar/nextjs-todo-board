@@ -1,5 +1,5 @@
 import CloseButton from '@/components/CloseButton'
-import { useLoadingStore, useUserStore } from '@/store'
+import { useDataStore, useLoadingStore, useUserStore } from '@/store'
 import { History, Todo } from '@/types/types'
 import { createClient } from '@/utils/supabase/client'
 import { faSave, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
@@ -19,6 +19,7 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
   const supabase = createClient()
   const { user } = useUserStore()
   const { setIsLoading } = useLoadingStore()
+  const { todos, setTodosData } = useDataStore()
 
   useEffect(() => {
     setTodoData(data)
@@ -45,10 +46,17 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
       .update({
         title: formData.get('title'),
         description: formData.get('description'),
-        user: user?.id,
         expire_at: formData.get('expire')
       })
       .eq('id', data?.id)
+
+    // Updating local todos store
+    const idx = todos.findIndex((item) => item.id == data?.id)
+    todos[idx].title = formData.get('title')?.toString() || ''
+    todos[idx].description = formData.get('description')?.toString() || ''
+    todos[idx].expire_at = formData.get('expire')?.toString() || ''
+    setTodosData(todos)
+
     setIsLoading(false)
 
     if (error) {
@@ -65,6 +73,9 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
     if (!error) {
       setShowDrawer ? setShowDrawer() : ''
     }
+    const idx = todos.findIndex((todo) => todo.id == data?.id)
+    todos.splice(idx, 1)
+    setTodosData(todos)
 
     setIsLoading(false)
   }

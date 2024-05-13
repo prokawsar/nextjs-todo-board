@@ -1,6 +1,6 @@
 'use client'
 import CloseButton from '@/components/CloseButton'
-import { useUserStore } from '@/store'
+import { useDataStore, useUserStore } from '@/store'
 import { createClient } from '@/utils/supabase/client'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,6 +12,8 @@ export default function AddCategory() {
   const router = useRouter()
   const { user, setUser } = useUserStore()
   const supabase = createClient()
+
+  const { categories, setCategoryData } = useDataStore()
 
   const userData = supabase.auth.getUser()
 
@@ -26,12 +28,22 @@ export default function AddCategory() {
 
     if (!formData.get('name')) return
 
-    const { error, data } = await supabase.from('categories').insert({
-      name: formData.get('name'),
-      user: user?.id
-    })
+    const { error, data } = await supabase
+      .from('categories')
+      .insert({
+        name: formData.get('name'),
+        user: user?.id
+      })
+      .select()
 
-    if (!error) {
+    if (!error && data) {
+      categories.push({
+        id: data[0].id,
+        name: formData.get('name')?.toString() || '',
+        user: user?.id || ''
+      })
+      setCategoryData(categories)
+
       router.refresh()
       setShowAddCategory(false)
     }

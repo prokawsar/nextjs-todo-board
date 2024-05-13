@@ -25,7 +25,7 @@ export default function CategoryBoard({ category, todoList }: Props) {
   const router = useRouter()
   const { setIsLoading } = useLoadingStore()
   const { cardBoard, setCardBoard } = useCardBoardStore()
-  const { todos, setTodosData } = useDataStore()
+  const { todos, setTodosData, categories, setCategoryData } = useDataStore()
 
   useEffect(() => {
     const channel = supabase
@@ -68,10 +68,6 @@ export default function CategoryBoard({ category, todoList }: Props) {
       setIsLoading(false)
       return
     }
-    // Updating local todos store
-    const idx = todos.findIndex((todo) => todo.id == todo_id)
-    todos[idx].category = category.id
-    setTodosData(todos)
 
     const { error } = await supabase
       .from('todos')
@@ -82,6 +78,11 @@ export default function CategoryBoard({ category, todoList }: Props) {
     if (error) {
       console.error(error)
     }
+
+    // Updating local todos store
+    const idx = todos.findIndex((todo) => todo.id == todo_id)
+    todos[idx].category = category.id
+    setTodosData(todos)
 
     const { data } = await supabase.from('history').insert({
       todo: todo_id,
@@ -98,6 +99,11 @@ export default function CategoryBoard({ category, todoList }: Props) {
     if (error) {
       console.error(error)
     }
+    // Deleting from local store
+    const idx = categories.findIndex((item) => item.id == category.id)
+    categories.splice(idx, 1)
+    setCategoryData(categories)
+
     router.refresh()
     setIsLoading(false)
   }
@@ -142,11 +148,7 @@ export default function CategoryBoard({ category, todoList }: Props) {
 
       {showAddTask && (
         <Modal onClickBackdrop={() => setshowAddTask(false)}>
-          <AddTask
-            category={category}
-            onClose={() => setshowAddTask(false)}
-            onSubmit={() => setshowAddTask(false)}
-          />
+          <AddTask category={category} onClose={() => setshowAddTask(false)} />
         </Modal>
       )}
 
