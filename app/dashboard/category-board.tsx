@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/client'
 import { DragEvent, useEffect, useState } from 'react'
 import AddTask from './add-task'
 import Card from './card'
-import { useCardBoardStore, useLoadingStore } from '@/store'
+import { useCardBoardStore, useDataStore, useLoadingStore } from '@/store'
 import CardDetails from './card-details'
 import { Category, Todo } from '@/types/types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,10 +14,10 @@ import { useRouter } from 'next/navigation'
 
 type Props = {
   category: Category
-  todos?: Todo[] | null
+  todoList?: Todo[] | null
 }
 
-export default function CategoryBoard({ category, todos }: Props) {
+export default function CategoryBoard({ category, todoList }: Props) {
   const [showAddTask, setshowAddTask] = useState(false)
   const [todoData, setTodoData] = useState<Todo>()
   const [isDraggingOver, setIsDraggingOver] = useState(false)
@@ -25,6 +25,7 @@ export default function CategoryBoard({ category, todos }: Props) {
   const router = useRouter()
   const { setIsLoading } = useLoadingStore()
   const { cardBoard, setCardBoard } = useCardBoardStore()
+  const { todos, setTodosData } = useDataStore()
 
   useEffect(() => {
     const channel = supabase
@@ -48,7 +49,7 @@ export default function CategoryBoard({ category, todos }: Props) {
   }, [supabase, router])
 
   // Filtering todos here instead passing all todos
-  const this_category_todos = todos?.filter((todo) => todo.category == category.id)
+  const this_category_todos = todoList?.filter((todo) => todo.category == category.id)
 
   const handleShowTodo = (data: any) => {
     setCardBoard(category.name)
@@ -62,7 +63,15 @@ export default function CategoryBoard({ category, todos }: Props) {
     setIsDraggingOver(false)
     const todo_id = e.dataTransfer.getData('card')
     const category_id = e.dataTransfer.getData('category_id')
-    if (!todo_id || category.id.toString() == category_id) return
+
+    if (!todo_id || category.id.toString() == category_id) {
+      setIsLoading(false)
+      return
+    }
+    // Updating local todos store
+    const idx = todos.findIndex((todo) => todo.id == todo_id)
+    todos[idx].category = category.id
+    setTodosData(todos)
 
     const { error } = await supabase
       .from('todos')
