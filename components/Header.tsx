@@ -1,16 +1,14 @@
-import AuthButton from "./AuthButton";
-import NextLogo from "./NextLogo";
-import SupabaseLogo from "./SupabaseLogo";
+import AuthButton from './AuthButton'
 
 export default function Header() {
   return (
-    <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-      <div className="w-full max-w-7xl flex justify-between items-center p-3">
+    <nav className="flex h-16 w-full justify-center border-b border-b-slate-600/10">
+      <div className="flex w-full max-w-7xl items-center justify-between p-3">
         <a href="/">
           <h1 className="text-2xl font-bold text-slate-600">Todo Board</h1>
         </a>
-        {<AuthButton />}
+        <div className="flex flex-row items-center gap-2">{<AuthButton />}</div>
       </div>
     </nav>
-  );
+  )
 }

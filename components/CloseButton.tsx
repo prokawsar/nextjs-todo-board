@@ -1,18 +1,18 @@
-import { faMultiply } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMultiply } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 type CloseButtonProp = {
-  onClick?: () => void;
-  styles?: string;
-};
+  onClick?: () => void
+  styles?: string
+}
 export default function CloseButton({ onClick, styles }: CloseButtonProp) {
   return (
     <button
       type="button"
-      className={`bg-slate-200 p-1 hover:bg-slate-400 hover:text-white rounded-full h-5 w-5 flex justify-center items-center ${styles}`}
-      onClick={() => (onClick ? onClick() : "")}
+      className={`flex h-5 w-5 items-center justify-center rounded-full bg-slate-200 p-1 hover:bg-slate-400 hover:text-white ${styles}`}
+      onClick={() => (onClick ? onClick() : '')}
     >
       <FontAwesomeIcon icon={faMultiply} />
     </button>
-  );
+  )
 }
