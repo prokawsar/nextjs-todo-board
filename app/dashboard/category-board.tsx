@@ -25,7 +25,7 @@ export default function CategoryBoard({ category, todoList }: Props) {
   const router = useRouter()
   const { setIsLoading } = useLoadingStore()
   const { cardBoard, setCardBoard } = useCardBoardStore()
-  const { todos, setTodosData, categories, setCategoryData } = useDataStore()
+  const { todos, setTodosData, deleteCategory } = useDataStore()
 
   useEffect(() => {
     const channel = supabase
@@ -93,17 +93,14 @@ export default function CategoryBoard({ category, todoList }: Props) {
     setIsLoading(false)
   }
 
-  const deleteCategory = async () => {
+  const handleDeleteCategory = async () => {
     setIsLoading(true)
     const { error } = await supabase.from('categories').delete().eq('id', category.id)
     if (error) {
       console.error(error)
     }
     // Deleting from local store
-    const idx = categories.findIndex((item) => item.id == category.id)
-    categories.splice(idx, 1)
-    setCategoryData(categories)
-
+    deleteCategory(category.id)
     router.refresh()
     setIsLoading(false)
   }
@@ -124,7 +121,7 @@ export default function CategoryBoard({ category, todoList }: Props) {
     >
       <div className="relative flex flex-col px-3 py-2">
         {!this_category_todos?.length && (
-          <button onClick={deleteCategory} className="absolute right-0 top-0 h-4 w-6">
+          <button onClick={handleDeleteCategory} className="absolute right-0 top-0 h-4 w-6">
             <FontAwesomeIcon icon={faTrashAlt} size="xs" />
           </button>
         )}

@@ -39,12 +39,24 @@ interface dataState {
   todos: Todo[]
   categories: Category[]
   setTodosData: (todos: Todo[]) => void
+  deleteTodo: (id: string) => void
   setCategoryData: (todos: Category[]) => void
+  deleteCategory: (id: number) => void
 }
 
 export const useDataStore = create<dataState>()((set) => ({
   todos: [],
   categories: [],
   setTodosData: (todos: Todo[]) => set({ todos: todos }),
-  setCategoryData: (categories: Category[]) => set({ categories: categories })
+  deleteTodo: (id: string) => {
+    set((state) => ({
+      todos: state.todos.filter((todo) => todo.id != id)
+    }))
+  },
+  setCategoryData: (categories: Category[]) => set({ categories: categories }),
+  deleteCategory: (id: number) => {
+    set((state) => ({
+      categories: state.categories.filter((category) => category.id != id)
+    }))
+  }
 }))

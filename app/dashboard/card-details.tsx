@@ -19,7 +19,7 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
   const supabase = createClient()
   const { user } = useUserStore()
   const { setIsLoading } = useLoadingStore()
-  const { todos, setTodosData } = useDataStore()
+  const { todos, setTodosData, deleteTodo } = useDataStore()
 
   useEffect(() => {
     setTodoData(data)
@@ -73,10 +73,7 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
     if (!error) {
       setShowDrawer ? setShowDrawer() : ''
     }
-    const idx = todos.findIndex((todo) => todo.id == data?.id)
-    todos.splice(idx, 1)
-    setTodosData(todos)
-
+    deleteTodo(data?.id as string)
     setIsLoading(false)
   }
 
