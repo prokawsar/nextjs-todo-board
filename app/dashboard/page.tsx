@@ -1,9 +1,8 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import AddCategory from './add-category'
-import CategoryBoard from './category-board'
 import ClientDataLoader from '@/components/ClientDataLoader'
-import DashboardWrapper from './dashboard-wrapper'
+import BoardList from './board-list'
 
 export default async function Dashboard() {
   const supabase = createClient()
@@ -15,11 +14,6 @@ export default async function Dashboard() {
   if (!user) {
     return redirect('/login')
   }
-  // const { data: categories } = await supabase.from('categories').select().eq('user', user.id)
-  // const { data: todos } = await supabase.from('todos').select().eq('user', user.id)
-
-  // Restricted access category for users
-  // const this_users_category = categories?.filter((category) => category.user == user.id)
 
   return (
     <div className="flex w-full max-w-7xl flex-1 flex-col items-center">
@@ -28,13 +22,9 @@ export default async function Dashboard() {
       <div
         className={`grid h-[85vh] w-full auto-cols-[16rem] grid-flow-col gap-x-2 overflow-x-auto`}
       >
-        {/* {this_users_category.length &&
-          this_users_category?.map((category) => (
-            <CategoryBoard category={category} todos={todos} key={category.id} />
-          ))} */}
-        <DashboardWrapper />
-        {<AddCategory />}
-        {<ClientDataLoader />}
+        <BoardList />
+        <AddCategory />
+        <ClientDataLoader />
       </div>
     </div>
   )
