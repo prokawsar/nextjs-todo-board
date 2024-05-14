@@ -19,26 +19,25 @@ export default async function Signup({ searchParams }: { searchParams: { message
 
     const origin = headers().get('origin')
     console.log(origin)
-    return
 
-    const email = formData.get('email') as string
-    const password = formData.get('password') as string
-    const supabase = createClient()
+    // const email = formData.get('email') as string
+    // const password = formData.get('password') as string
+    // const supabase = createClient()
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${origin}/auth/callback`
-      }
-    })
+    // const { error } = await supabase.auth.signUp({
+    //   email,
+    //   password,
+    //   options: {
+    //     emailRedirectTo: `${origin}/auth/callback`
+    //   }
+    // })
 
-    if (error) {
-      console.log(error)
-      return redirect('/signup?message=Could not signup user. Reason: ' + error.code)
-    }
+    // if (error) {
+    //   console.log(error)
+    //   return redirect('/signup?message=Could not signup user. Reason: ' + error.code)
+    // }
 
-    return redirect('/login?success=Check email to continue sign in process')
+    // return redirect('/login?success=Check email to continue sign in process')
   }
 
   return (
