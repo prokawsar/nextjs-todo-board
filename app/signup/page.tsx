@@ -18,6 +18,9 @@ export default async function Signup({ searchParams }: { searchParams: { message
     'use server'
 
     const origin = headers().get('origin')
+    console.log(origin)
+    return
+
     const email = formData.get('email') as string
     const password = formData.get('password') as string
     const supabase = createClient()
