@@ -88,7 +88,7 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
   return (
     data && (
       <div
-        className={`fixed right-0 top-0 z-40 h-screen w-96 -translate-x-full border-l-[1.5px] border-gray-200 bg-white pt-8 transition-all sm:translate-x-0 `}
+        className={`fixed right-0 top-0 z-40 h-screen w-full border-l-[1.5px] border-gray-200 bg-white pt-8 transition-all sm:translate-x-0 md:w-96`}
         aria-label="sidebar"
       >
         <div className="relative h-full w-full overflow-y-auto bg-white px-3  pb-4">
