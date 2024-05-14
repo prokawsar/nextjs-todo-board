@@ -17,27 +17,26 @@ export default async function Signup({ searchParams }: { searchParams: { message
   const signUp = async (formData: FormData) => {
     'use server'
 
-    const origin = headers().get('origin')
-    console.log(origin)
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
+    const supabase = createClient()
 
-    // const email = formData.get('email') as string
-    // const password = formData.get('password') as string
-    // const supabase = createClient()
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: process.env.NEXT_PUBLIC_VERCEL_URL
+          ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+          : 'http://localhost:3000'
+      }
+    })
 
-    // const { error } = await supabase.auth.signUp({
-    //   email,
-    //   password,
-    //   options: {
-    //     emailRedirectTo: `${origin}/auth/callback`
-    //   }
-    // })
+    if (error) {
+      console.log(error)
+      return redirect('/signup?message=Could not signup user. Reason: ' + error.code)
+    }
 
-    // if (error) {
-    //   console.log(error)
-    //   return redirect('/signup?message=Could not signup user. Reason: ' + error.code)
-    // }
-
-    // return redirect('/login?success=Check email to continue sign in process')
+    return redirect('/login?success=Check email to continue sign in process')
   }
 
   return (
