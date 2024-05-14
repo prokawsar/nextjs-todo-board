@@ -12,7 +12,7 @@ const defaultUrl = process.env.VERCEL_URL
 export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: 'Todo board | Nextjs, Supabase',
-  description: 'The fastest way to build apps with Next.js and Supabase'
+  description: 'Todo board app build with Next.js, Tailwind and Supabase'
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

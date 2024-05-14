@@ -190,9 +190,9 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
                   <button
                     type="button"
                     onClick={() => setDeleteConfirm(true)}
-                    className="flex w-auto items-center gap-1 rounded-md border px-3 py-1 hover:bg-slate-100"
+                    className="flex w-auto items-center gap-1 rounded-md border border-red-500 px-3 py-1 text-red-500 hover:bg-slate-100"
                   >
-                    <FontAwesomeIcon icon={faTrashAlt} size="xs" />
+                    <FontAwesomeIcon icon={faTrashAlt} size="xs" className="text-red-500" />
                     Delete
                   </button>
                 )}
