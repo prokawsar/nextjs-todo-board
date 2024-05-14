@@ -1,4 +1,3 @@
-import { headers } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { SubmitButton } from '@/components/SubmitButton'
@@ -17,7 +16,6 @@ export default async function Signup({ searchParams }: { searchParams: { message
   const signUp = async (formData: FormData) => {
     'use server'
 
-    const origin = headers().get('origin')
     const email = formData.get('email') as string
     const password = formData.get('password') as string
     const supabase = createClient()
@@ -26,7 +24,9 @@ export default async function Signup({ searchParams }: { searchParams: { message
       email,
       password,
       options: {
-        emailRedirectTo: `${origin}/auth/callback`
+        emailRedirectTo: process.env.NEXT_PUBLIC_VERCEL_URL
+          ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+          : 'http://localhost:3000'
       }
     })
 
