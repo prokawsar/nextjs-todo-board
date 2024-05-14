@@ -1,20 +1,20 @@
 'use client'
 import CloseButton from '@/components/CloseButton'
-import { useLoadingStore, useUserStore } from '@/store'
+import { useDataStore, useLoadingStore, useUserStore } from '@/store'
 import { Category } from '@/types/types'
 import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import { FormEvent } from 'react'
 interface AddTaskProps {
   onClose?: () => void
-  onSubmit?: () => void
   category: Category | undefined
 }
 
-export default function AddTask({ category, onClose, onSubmit }: AddTaskProps) {
+export default function AddTask({ category, onClose }: AddTaskProps) {
   const { user } = useUserStore()
   const router = useRouter()
   const { setIsLoading } = useLoadingStore()
+  const { todos, setTodosData } = useDataStore()
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -34,19 +34,29 @@ export default function AddTask({ category, onClose, onSubmit }: AddTaskProps) {
         category: category?.id
       })
       .select()
-    setIsLoading(false)
+
     if (error) {
       console.error(error)
       return
     }
+
+    todos.push({
+      id: data[0].id,
+      title: formData.get('title')?.toString() || '',
+      description: formData.get('description')?.toString() || '',
+      user: user?.id || '',
+      expire_at: formData.get('expire')?.toString() || '',
+      category: category?.id || -1
+    })
 
     await supabase.from('history').insert({
       todo: data[0].id,
       from: null,
       to: null
     })
-
-    onSubmit ? onSubmit() : ''
+    setTodosData(todos)
+    onClose ? onClose() : ''
+    setIsLoading(false)
   }
 
   const today = new Date()
