@@ -149,7 +149,7 @@ export default function CategoryBoard({ category, todoList }: Props) {
         </Modal>
       )}
 
-      {cardBoard === category.name && (
+      {cardBoard === category.name && todoData && (
         <CardDetails data={todoData} setShowDrawer={() => setCardBoard('')} />
       )}
     </div>

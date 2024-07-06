@@ -8,14 +8,14 @@ import { useState, FormEvent, useEffect, ChangeEvent } from 'react'
 import HistoryRow from './history-row'
 
 type Props = {
-  data: Todo | undefined
+  data: Todo
   setShowDrawer: Function
 }
 
 export default function CardDetails({ data, setShowDrawer }: Props) {
   const [deleteConfirm, setDeleteConfirm] = useState(false)
   const [todoHistory, setHistory] = useState<any>()
-  const [todoData, setTodoData] = useState<Todo | undefined>(data)
+  const [todoData, setTodoData] = useState<Todo>(data)
   const supabase = createClient()
   const { user } = useUserStore()
   const { setIsLoading } = useLoadingStore()
@@ -26,13 +26,29 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
     supabase
       .from('history')
       .select()
-      .eq('todo', data?.id)
+      .eq('todo', data.id)
       .then(({ data }) => {
-        if (data?.length) {
+        if (data && data.length) {
           setHistory(data)
         }
       })
   }, [data])
+
+  const updateTodo = ({
+    title,
+    description,
+    expire_at
+  }: {
+    title: FormDataEntryValue
+    description: FormDataEntryValue
+    expire_at: FormDataEntryValue
+  }) => {
+    const idx = todos.findIndex((item) => item.id == data.id)
+    todos[idx].title = title.toString()
+    todos[idx].description = description.toString()
+    todos[idx].expire_at = expire_at.toString()
+    setTodosData(todos)
+  }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -41,21 +57,14 @@ export default function CardDetails({ data, setShowDrawer }: Props) {
     const formData = new FormData(event.currentTarget)
     if (!formData.get('title')) return
 
-    const { error } = await supabase
-      .from('todos')
-      .update({
-        title: formData.get('title'),
-        description: formData.get('description'),
-        expire_at: formData.get('expire')
-      })
-      .eq('id', data?.id)
-
+    const payload = {
+      title: formData.get('title') || '',
+      description: formData.get('description') || '',
+      expire_at: formData.get('expire') || ''
+    }
+    const { error } = await supabase.from('todos').update(payload).eq('id', data.id)
     // Updating local todos store
-    const idx = todos.findIndex((item) => item.id == data?.id)
-    todos[idx].title = formData.get('title')?.toString() || ''
-    todos[idx].description = formData.get('description')?.toString() || ''
-    todos[idx].expire_at = formData.get('expire')?.toString() || ''
-    setTodosData(todos)
+    updateTodo(payload)
 
     setIsLoading(false)
 
